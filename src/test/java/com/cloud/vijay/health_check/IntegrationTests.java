@@ -2,21 +2,27 @@ package com.cloud.vijay.health_check;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.*;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.matchesRegex;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IntegrationTests {
 
     private static final String UUID_REGEX = "^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$";
 
-    @BeforeAll
-    public static void setup() {
-        RestAssured.baseURI = "http://localhost:8080";
-        RestAssured.port = 8080;
+    @LocalServerPort
+    private int serverPort;
+    @PostConstruct
+    public void setup() {
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = serverPort;
     }
 
     @Test
