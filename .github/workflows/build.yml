@@ -10,6 +10,13 @@ on:
 jobs:
   first-job:
     runs-on: ubuntu-latest
+
+    env:
+      DB DATABASE: health_check
+      DB_USERNAME: ${{secrets.DATABASE_USERNAME}}
+      DB_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+      DB_URL: ${{secrets.DATABASE_URL}}
+
     steps:
       - name: first step
         run: echo "first workflow!"
@@ -24,5 +31,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: start DB
+        run:
+          sudo /etc/init.d/mysql start
+          mysql -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USERNAME -p$DB_PASSWORD
       - name: Build Maven
-        run: mvn clean install -DskipTests=true
+        run: mvn clean -B package --file pom.xml
