@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DB DATABASE: health
+      DB_DATABASE: health
       DB_USERNAME: ${{secrets.DATABASE_USERNAME}}
       DB_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
       DB_URL: ${{secrets.DATABASE_URL}}
