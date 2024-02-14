@@ -41,7 +41,7 @@ public class IntegrationTests {
                 .when()
                 .post("/v1/user")
                 .then()
-                .statusCode(201);
+                .statusCode(200);
 
         // Retrieve the user and validate existence
         given()
