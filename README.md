@@ -66,8 +66,13 @@ The project includes a continuous integration workflow using GitHub Actions. The
 
 ### CI Workflow Details
 
+The workflow focuses on integration tests for the /v1/user endpoint.
 The workflow performs the following steps:
 
 1. Checkout source code.
 2. Set up JDK 17.
-3. Build Maven: `mvn clean install -DskipTests=true`
+3. start mysql
+4. Build Maven: `mvn -B package --file pom.xml`
+
+
+
