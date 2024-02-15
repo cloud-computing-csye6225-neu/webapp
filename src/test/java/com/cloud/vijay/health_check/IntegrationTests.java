@@ -16,7 +16,12 @@ import static org.hamcrest.Matchers.matchesRegex;
 public class IntegrationTests {
 
     private static final String UUID_REGEX = "^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$";
-
+    private static final String userName = System.getenv("USER_NAME");
+    private static final String password = System.getenv("PASSWORD");
+    private static final String firstName = System.getenv("FIRST_NAME");
+    private static final String lastName = System.getenv("LAST_NAME");
+    private static final String updatedFirstName = System.getenv("UPDATED_FIRST_NAME");
+    private static final String updatedLastName = System.getenv("UPDATED_LAST_NAME");
     @LocalServerPort
     private int serverPort;
     @PostConstruct
@@ -33,10 +38,10 @@ public class IntegrationTests {
         given()
                 .contentType(ContentType.JSON)
                 .body("{\n" +
-                        "    \"first_name\": \"test\",\n" +
-                        "    \"last_name\": \"test\",\n" +
-                        "    \"password\":\"password\",\n" +
-                        "    \"username\":\"test@gmail.com\"\n" +
+                        "    \"first_name\": \"" + firstName + "\",\n" +
+                        "    \"last_name\": \"" + lastName + "\",\n" +
+                        "    \"password\": \"" + password + "\",\n" +
+                        "    \"username\": \"" + userName + "\"\n" +
                         "}")
                 .when()
                 .post("/v1/user")
@@ -64,9 +69,8 @@ public class IntegrationTests {
                 .contentType(ContentType.JSON)
                 .auth().preemptive().basic("test@gmail.com", "password")
                 .body("{\n" +
-                        "    \"first_name\": \"test_updated\",\n" +
-                        "    \"last_name\": \"test_updated\",\n" +
-                        "    \"password\":\"password\"\n" +
+                        "    \"first_name\": \"" + updatedFirstName + "\",\n" +
+                        "    \"last_name\": \"" + updatedLastName + "\"\n" +
                         "}")
                 .when()
                 .put("/v1/user/self")
