@@ -50,15 +50,15 @@ public class IntegrationTests {
 
         // Retrieve the user and validate existence
         given()
-                .auth().preemptive().basic("test@gmail.com", "password")
+                .auth().preemptive().basic(userName, password)
                 .when()
                 .get("/v1/user/self")
                 .then()
                 .statusCode(200)
                 .body("id", matchesRegex(UUID_REGEX))
-                .body("first_name", equalTo("test"))
-                .body("last_name", equalTo("test"))
-                .body("username", equalTo("test@gmail.com"));
+                .body("first_name", equalTo(firstName))
+                .body("last_name", equalTo(lastName))
+                .body("username", equalTo(userName));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class IntegrationTests {
         // Update the account
         given()
                 .contentType(ContentType.JSON)
-                .auth().preemptive().basic("test@gmail.com", "password")
+                .auth().preemptive().basic(userName, password)
                 .body("{\n" +
                         "    \"first_name\": \"" + updatedFirstName + "\",\n" +
                         "    \"last_name\": \"" + updatedLastName + "\"\n" +
@@ -80,13 +80,13 @@ public class IntegrationTests {
         // Retrieve the user and validate the update
         given()
                 .when()
-                .auth().preemptive().basic("test@gmail.com", "password")
+                .auth().preemptive().basic(userName, password)
                 .get("/v1/user/self")
                 .then()
                 .statusCode(200)
                 .body("id", matchesRegex(UUID_REGEX))
-                .body("first_name", equalTo("test_updated"))
-                .body("last_name", equalTo("test_updated"))
-                .body("username", equalTo("test@gmail.com"));
+                .body("first_name", equalTo(updatedFirstName))
+                .body("last_name", equalTo(updatedLastName))
+                .body("username", equalTo(userName));
     }
 }
