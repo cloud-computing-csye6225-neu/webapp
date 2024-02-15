@@ -16,6 +16,12 @@ jobs:
       DB_USERNAME: ${{secrets.DATABASE_USERNAME}}
       DB_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
       DB_URL: ${{secrets.DATABASE_URL}}
+      FIRST_NAME: ${{secrets.FIRST_NAME}}
+      LAST_NAME: ${{secrets.LAST_NAME}}
+      USER_NAME: ${{secrets.USER_NAME}}
+      PASSWORD: ${{secrets.PASSWORD}}
+      UPDATED_FIRST_NAME: ${{secrets.UPDATED_FIRST_NAME}}
+      UPDATED_LAST_NAME: ${{secrets.UPDATED_LAST_NAME}}
 
     steps:
       - name: first step
