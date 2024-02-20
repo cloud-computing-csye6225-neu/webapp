@@ -7,32 +7,32 @@ packer {
   }
 }
 
-variable "zone"{
-  type = string
+variable "zone" {
+  type    = string
   default = "us-east1-b"
 }
-variable "project_id"{
-   type = string
+variable "project_id" {
+  type    = string
   default = "csye6225-assignemnt-3"
 }
-variable "source_image_family"{
-  type = string
+variable "source_image_family" {
+  type    = string
   default = "centos-stream-8"
 }
-variable "network"{
-  type = string
+variable "network" {
+  type    = string
   default = "default"
 }
-variable "source_ssh_username"{
-  type = string
+variable "source_ssh_username" {
+  type    = string
   default = "packer"
 }
 source "googlecompute" "custom-mi" {
-  project_id             = var.project_id
-  source_image_family   = var.source_image_family
-  zone                   = var.zone
-  network =var.network
-  ssh_username           = var.source_ssh_username
+  project_id          = var.project_id
+  source_image_family = var.source_image_family
+  zone                = var.zone
+  network             = var.network
+  ssh_username        = var.source_ssh_username
   # disk_size              = "20"
   # disk_type              = "pd-standard"
   # image_name             = "csye6225-{{timestamp}}"
@@ -47,7 +47,7 @@ build {
   sources = [
     "source.googlecompute.custom-mi"
   ]
-  provisioner "shell"{
+  provisioner "shell" {
     script = "pre-req.sh"
   }
 }
