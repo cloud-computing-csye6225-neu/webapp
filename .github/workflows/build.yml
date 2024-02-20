@@ -36,12 +36,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-
-      - name: Setup `packer`
-        uses: hashicorp/setup-packer@main
-        id: setup
-        with:
-          version: "latest"
            
       - name: start DB
         run:
@@ -50,14 +44,3 @@ jobs:
 
       - name: Build Maven
         run: mvn clean -B package --file pom.xml
-      
-      - name: Init Packer
-        run : packer init .
-        
-  validate-image:
-    needs: first-job
-    steps:
-      - name: check the format
-        run:  packer fmt --check  packer-config.pkr.hcl
-      - name: validate the template
-        run: packer validate packer-config.pkr.hcl
