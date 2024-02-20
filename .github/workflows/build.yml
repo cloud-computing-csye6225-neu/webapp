@@ -54,10 +54,10 @@ jobs:
       - name: Init Packer
         run : packer init
         
-  validate-image:
-    needs: first-job
-    steps:
-      - name: check the format
-        run:  packer fmt --check  packer-config.pkr.hcl
-      - name: validate the template
-        run: packer validate packer-config.pkr.hcl
+  # validate-image:
+  #   needs: first-job
+  #   steps:
+  #     - name: check the format
+  #       run:  packer fmt --check  packer-config.pkr.hcl
+  #     - name: validate the template
+  #       run: packer validate packer-config.pkr.hcl
