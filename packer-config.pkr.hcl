@@ -28,15 +28,15 @@ variable "source_ssh_username" {
   default = "packer"
 }
 
-variable "DB_URL"{
+variable "DB_URL" {
   type = string
 }
 
-variable "DB_USERNAME"{
+variable "DB_USERNAME" {
   type = string
 }
 
-variable "DB_PASSWORD"{
+variable "DB_PASSWORD" {
   type = string
 }
 
@@ -46,7 +46,7 @@ source "googlecompute" "custom-mi" {
   zone                = var.zone
   network             = var.network
   ssh_username        = var.source_ssh_username
-  image_name             = "csye6225-{{timestamp}}"
+  image_name          = "csye6225-{{timestamp}}"
   # disk_size              = "20"
   # disk_type              = "pd-standard"
   # image_description      = "A custom image with webapp pre-installed"
@@ -61,12 +61,14 @@ build {
     "source.googlecompute.custom-mi"
   ]
 
-  environment_vars = {
-    DB_URL = var.DB_URL
-    DB_USERNAME = var.DB_USERNAME
-    DB_PASSWORD = var.DB_PASSWORD
+  provisioner "shell" {
+    inline = [
+      "export DB_URL=${var.DB_URL}",
+      "export DB_USERNAME=${var.DB_USERNAME}",
+      "export DB_PASSWORD=${var.DB_PASSWORD}"
+    ]
   }
-  
+
   provisioner "shell" {
     inline = [
       "sudo adduser csye6225 --shell /usr/sbin/nologin",
