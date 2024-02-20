@@ -101,8 +101,8 @@ build {
   provisioner "shell" {
     inline = [
     "sudo systemctl daemon-reload",
-    "sudo systemtl start csye6225",
-    "sudo systemtl enable csye6225"
+    "sudo systemctl start csye6225",
+    "sudo systemctl enable csye6225"
     ]
   }
 }
