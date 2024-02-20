@@ -5,12 +5,14 @@
  
 # Install Java 17
 echo "Installing Java"
-sudo dnf install java-17-openjdk -y
+sudo yum -y install wget vim
+wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.rpm
+sudo yum -y install ./jdk-17_linux-x64_bin.rpm
 
 # Update jdk version
 echo "Updating JDK Version"
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk>> ~/.bashrc
-export PATH=$JAVA_HOME/bin:$PATH>> ~/.bashrc
+echo 'export JAVA_HOME=/usr/lib/jvm/jdk-17-oracle-x64/' | sudo tee /etc/environment
+source /etc/environment
 
 # Install Maven
 echo "Installing Maven"
