@@ -61,13 +61,14 @@ build {
     "source.googlecompute.custom-mi"
   ]
 
-  provisioner "shell" {
-    inline = [
-      "export DB_URL=${var.DB_URL}",
-      "export DB_USERNAME=${var.DB_USERNAME}",
-      "export DB_PASSWORD=${var.DB_PASSWORD}"
-    ]
-  }
+ provisioner "shell" {
+  inline = [
+    "echo 'DB_URL=${var.DB_URL}' | sudo tee -a /etc/environment",
+    "echo 'DB_USERNAME=${var.DB_USERNAME}' | sudo tee -a /etc/environment",
+    "echo 'DB_PASSWORD=${var.DB_PASSWORD}' | sudo tee -a /etc/environment",
+    "source /etc/environment"
+  ]
+}
 
   provisioner "shell" {
     inline = [
