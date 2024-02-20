@@ -1,4 +1,4 @@
-# Health Check and User Management Project
+# Health Check and User Management 
 
 This project focuses on ensuring the connectivity of the database through a health check mechanism and provides functionality for managing user details, including adding users and updating their information.
 
