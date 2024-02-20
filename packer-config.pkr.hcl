@@ -27,6 +27,19 @@ variable "source_ssh_username" {
   type    = string
   default = "packer"
 }
+
+variable "DB_URL"{
+  type = string
+}
+
+variable "DB_USERNAME"{
+  type = string
+}
+
+variable "DB_PASSWORD"{
+  type = string
+}
+
 source "googlecompute" "custom-mi" {
   project_id          = var.project_id
   source_image_family = var.source_image_family
@@ -48,6 +61,12 @@ build {
     "source.googlecompute.custom-mi"
   ]
 
+  environment_vars = {
+    DB_URL = var.DB_URL
+    DB_USERNAME = var.DB_USERNAME
+    DB_PASSWORD = var.DB_PASSWORD
+  }
+  
   provisioner "shell" {
     inline = [
       "sudo adduser csye6225 --shell /usr/sbin/nologin",
@@ -76,4 +95,6 @@ build {
       "sudo mv /tmp/csye6225.service /etc/systemd/system"
     ]
   }
+
+
 }
