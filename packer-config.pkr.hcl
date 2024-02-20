@@ -47,9 +47,17 @@ build {
   sources = [
     "source.googlecompute.custom-mi"
   ]
+
+  provisioner "shell"{
+    inline = [
+      "sudo adduser csye6225 --shell /usr/sbin/nologin",
+      "sudo usermod -aG csye6225 csye6225"
+    ]
+  }
   provisioner "shell" {
     script = "pre-req.sh"
   }
+
 
   provisioner "file" {
     source      = "target/healthCheckAPI-0.0.1-SNAPSHOT.jar"
@@ -58,6 +66,13 @@ build {
 
   provisioner "file" {
     source      = "csye6225.service"
-    destination = "/tmp/"
+    destination = "/etc/systemd/system/"
+  }
+
+  provisioner "shell"{
+    inline = [
+      "sudo chown testuser1: /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar",
+      "sudo chown testuser2: /tmp/csye6225.service"
+    ]
   }
 }
