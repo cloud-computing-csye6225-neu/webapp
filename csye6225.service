@@ -5,8 +5,8 @@ After=network.target
 [Service]
 User=csye6225
 Group=csye6225
-WorkingDirectory=/path/to/your/application
-ExecStart=java -jar your-application.jar
+WorkingDirectory=/tmp/
+ExecStart=java -jar /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar
 SuccessExitStatus=143
  
 [Install]
