@@ -33,9 +33,9 @@ source "googlecompute" "custom-mi" {
   zone                = var.zone
   network             = var.network
   ssh_username        = var.source_ssh_username
+  image_name             = "csye6225-{{timestamp}}"
   # disk_size              = "20"
   # disk_type              = "pd-standard"
-  # image_name             = "csye6225-{{timestamp}}"
   # image_description      = "A custom image with webapp pre-installed"
   # image_family           = "csye6255-app-image"
   # image_project_id       = "csye6255-assignemnt-3"
