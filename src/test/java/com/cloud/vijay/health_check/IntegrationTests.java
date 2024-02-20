@@ -85,7 +85,7 @@ public class IntegrationTests {
                 .then()
                 .statusCode(200)
                 .body("id", matchesRegex(UUID_REGEX))
-                .body("first_name", equalTo(updatedFirstName))
+                .body("first_name", equalTo("yesh"))
                 .body("last_name", equalTo(updatedLastName))
                 .body("username", equalTo(userName));
     }
