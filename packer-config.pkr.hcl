@@ -48,7 +48,7 @@ build {
     "source.googlecompute.custom-mi"
   ]
 
-  provisioner "shell"{
+  provisioner "shell" {
     inline = [
       "sudo adduser csye6225 --shell /usr/sbin/nologin",
       "sudo usermod -aG csye6225 csye6225"
@@ -69,10 +69,10 @@ build {
     destination = "/tmp/"
   }
 
-  provisioner "shell"{
+  provisioner "shell" {
     inline = [
       "sudo chown testuser1: /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar",
-      "sudo chown testuser2: /tmp/csye6225.service"
+      "sudo chown testuser2: /tmp/csye6225.service",
       "sudo mv /tmp/csye6225.service /etc/systemd/system"
     ]
   }
