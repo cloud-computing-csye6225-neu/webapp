@@ -1,0 +1,63 @@
+name: check packer
+
+on:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - main
+
+jobs:
+  create-build-jar:
+    runs-on: ubuntu-latest
+
+    env:
+      DB_DATABASE: health
+      DB_USERNAME: ${{secrets.DATABASE_USERNAME}}
+      DB_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+      DB_URL: ${{secrets.DATABASE_URL}}
+      FIRST_NAME: ${{secrets.FIRST_NAME}}
+      LAST_NAME: ${{secrets.LAST_NAME}}
+      USER_NAME: ${{secrets.USER_NAME}}
+      PASSWORD: ${{secrets.PASSWORD}}
+      UPDATED_FIRST_NAME: ${{secrets.UPDATED_FIRST_NAME}}
+      UPDATED_LAST_NAME: ${{secrets.UPDATED_LAST_NAME}}
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      
+      - name: setup google config
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{secrets.GCP_CREDENTIALS}}'
+
+      - name: Build Maven
+        run: ls -al 
+      - name: start DB
+        run:
+          sudo /etc/init.d/mysql start
+          mysql -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USERNAME -p$DB_PASSWORD
+
+      - name: Build Maven
+        run: mvn clean install | ls -al
+
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: "latest"
+    
+      - name: Init Packer
+        run : packer init .
+
+      - name: build Image
+        run : packer build packer-config.pkr.hcl
