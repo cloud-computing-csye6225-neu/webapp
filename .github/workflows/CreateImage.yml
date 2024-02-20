@@ -59,4 +59,4 @@ jobs:
         run : packer init .
 
       - name: build Image
-        run : packer build packer-config.pkr.hcl
+        run : packer build packer-config.pkr.hcl -var "DB_URL={{secrets.DATABASE_USERNAME}}" -var "DB_USERNAME={{secrets.DATABASE_USERNAME}}" -var "DB_PASSWORD={{secrets.DATABASE_PASSWORD}}"
