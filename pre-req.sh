@@ -11,8 +11,7 @@ sudo yum -y install ./jdk-17_linux-x64_bin.rpm
 
 # Update jdk version
 echo "Updating JDK Version"
-echo 'export JAVA_HOME=/usr/lib/jvm/jdk-17-oracle-x64/' | sudo tee /etc/environment
-source /etc/environment
+export JAVA_HOME=/usr/lib/jvm/jdk-17-oracle-x64/>> ~/.source /etc/environment
 
 # Install Maven
 echo "Installing Maven"
