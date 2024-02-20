@@ -38,33 +38,3 @@ DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';
 FLUSH PRIVILEGES;
 EOF
  
-# sudo mysql -u root -p"${MYSQL_ROOT_PASSWORD}" <<EOF
-# n
-# n
-# n
-# n
-# y;
-# EOF
- 
-# sudo mysql_secure_installation <<EOF
- 
-# n
-# n
-# n
-# n
-# Y
-# EOF
- 
- 
-# Install Tomcat
-echo "Start Tomcat Installation"
-sudo dnf install -y tomcat
- 
-# Start and enable Tomcat service
-sudo systemctl start tomcat
-sudo systemctl enable tomcat
-echo "Completed Tomcat Installation"
- 
- 
- 
-has context menu

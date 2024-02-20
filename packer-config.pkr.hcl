@@ -50,4 +50,14 @@ build {
   provisioner "shell" {
     script = "pre-req.sh"
   }
+
+  provisioner "file"{
+    source      = "target/healthCheckAPI-0.0.1-SNAPSHOT.jar"
+    destination = "/tmp/"
+  }
+  
+  provisioner "file"{
+  source = "csye6225.service"
+  destination = "/tmp/"
+  }
 }
