@@ -66,13 +66,14 @@ build {
 
   provisioner "file" {
     source      = "csye6225.service"
-    destination = "/etc/systemd/system/"
+    destination = "/tmp/"
   }
 
   provisioner "shell"{
     inline = [
       "sudo chown testuser1: /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar",
       "sudo chown testuser2: /tmp/csye6225.service"
+      "sudo mv /tmp/csye6225.service /etc/systemd/system"
     ]
   }
 }
