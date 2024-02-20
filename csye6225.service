@@ -3,10 +3,6 @@ Description=Your Spring Boot Application
 After=network.target
  
 [Service]
-User=csye6225
-Group=csye6225
-WorkingDirectory=/tmp/
-ExecStartPre=/usr/sbin/setenforce 0
 ExecStart=java -jar /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar
 SuccessExitStatus=143
  
