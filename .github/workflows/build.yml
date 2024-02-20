@@ -52,7 +52,7 @@ jobs:
         run: mvn clean -B package --file pom.xml
       
       - name: Init Packer
-        run : packer init
+        run : packer init .
         
   # validate-image:
   #   needs: first-job
