@@ -40,13 +40,18 @@ variable "DB_PASSWORD" {
   type = string
 }
 
+variable "image_name" {
+  type = string
+  default = "csye6225-{{timestamp}}"
+}
+
 source "googlecompute" "custom-mi" {
   project_id          = var.project_id
   source_image_family = var.source_image_family
   zone                = var.zone
   network             = var.network
   ssh_username        = var.source_ssh_username
-  image_name          = "csye6225-{{timestamp}}"
+  image_name          = var.image_name
   # disk_size              = "20"
   # disk_type              = "pd-standard"
   # image_description      = "A custom image with webapp pre-installed"
@@ -65,9 +70,9 @@ build {
     environment_vars = [
       "DB_URL=${var.DB_URL}",
       "DB_USERNAME=${var.DB_USERNAME}",
-     " DB_PASSWORD=${var.DB_PASSWORD}"
+      "DB_PASSWORD=${var.DB_PASSWORD}"
     ]
-    script = "pre-req.sh"
+    script = "packer/scripts/pre-req.sh"
   }
 
 
@@ -81,12 +86,12 @@ build {
     destination = "/tmp/"
   }
 
-  provisioner "shell"{
+  provisioner "shell" {
     environment_vars = [
       "DB_URL=${var.DB_URL}",
       "DB_USERNAME=${var.DB_USERNAME}",
       "DB_PASSWORD=${var.DB_PASSWORD}"
     ]
-    script = "env-setup.sh"
+    script = "packer/scripts/env-setup.sh"
   }
 }
