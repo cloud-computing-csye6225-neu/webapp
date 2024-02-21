@@ -11,7 +11,7 @@ sudo yum -y install ./jdk-17_linux-x64_bin.rpm
 
 # Update jdk version
 echo "Updating JDK Version"
-export JAVA_HOME=/usr/lib/jvm/jdk-17-oracle-x64/ >> /etc/environment
+echo 'export JAVA_HOME=/usr/lib/jvm/jdk-17-oracle-x64' | sudo tee -a /etc/environment
 source /etc/environment
 
 # Install Maven
@@ -25,8 +25,10 @@ sudo dnf install mysql-server -y
 # Start and enable MySQL service
 sudo systemctl start mysqld
 sudo systemctl enable mysqld
- 
-MYSQL_ROOT_PASSWORD=root
+
+MYSQL_DB_URL=$1
+MYSQL_DB_USER_NAME=$2
+MYSQL_ROOT_PASSWORD=$3
  
 # Set MySQL root password non-interactively
 sudo mysqladmin -u root password "${MYSQL_ROOT_PASSWORD}"
@@ -39,4 +41,12 @@ DROP DATABASE IF EXISTS test;
 DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';
 FLUSH PRIVILEGES;
 EOF
- 
+
+# creating a no login user  
+sudo adduser csye6225 --shell /usr/sbin/nologin
+
+# add system variables. used for startup
+echo "DB_URL=${MYSQL_DB_URL}" | sudo tee -a /etc/environment
+echo "DB_USERNAME=${MYSQL_DB_USER_NAME}" | sudo tee -a /etc/environment
+echo "DB_PASSWORD=${MYSQL_ROOT_PASSWORD}" | sudo tee -a /etc/environment
+source /etc/environment
