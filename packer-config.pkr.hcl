@@ -73,12 +73,12 @@ build {
 
   provisioner "file" {
     source      = "target/healthCheckAPI-0.0.1-SNAPSHOT.jar"
-    destination = "/opt/"
+    destination = "/tmp/"
   }
 
   provisioner "file" {
     source      = "csye6225.service"
-    destination = "/opt/"
+    destination = "/tmp/"
   }
 
   provisioner "shell"{
