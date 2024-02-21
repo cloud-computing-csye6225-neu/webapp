@@ -4,7 +4,7 @@
 touch .env
 
 DB_URL=$1
-DB_USER=$2
+DB_USERNAME=$2
 DB_PASSWORD=$3
 
 # Append variables to .env file
