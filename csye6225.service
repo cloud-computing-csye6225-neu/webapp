@@ -6,7 +6,6 @@ After=network.target
 User=csye6225
 Group=csye6225
 Type=simple
-EnvironmentFile=/opt/.env
 ExecStart=/usr/bin/java -jar /opt/healthCheckAPI-0.0.1-SNAPSHOT.jar
 Restart=always
 
