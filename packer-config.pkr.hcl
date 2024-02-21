@@ -77,7 +77,7 @@ build {
     ]
   }
   provisioner "shell" {
-    script = "pre-req.sh ${var.DB_PASSWORD}"
+    script = "pre-req.sh"
   }
 
 

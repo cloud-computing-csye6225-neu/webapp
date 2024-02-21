@@ -26,7 +26,7 @@ sudo dnf install mysql-server -y
 sudo systemctl start mysqld
 sudo systemctl enable mysqld
  
-MYSQL_ROOT_PASSWORD=$1
+MYSQL_ROOT_PASSWORD=root
  
 # Set MySQL root password non-interactively
 sudo mysqladmin -u root password "${MYSQL_ROOT_PASSWORD}"
