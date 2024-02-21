@@ -99,6 +99,10 @@ build {
     ]
   }
 
+  provisioner "shell"{
+    script = "addEnv.sh"
+  }
+
   provisioner "shell" {
     inline = [
     "sudo systemctl daemon-reload",
