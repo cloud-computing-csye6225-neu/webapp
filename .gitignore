@@ -91,3 +91,5 @@ mvnw.cmd
 .vscode/
 .env
 .mvn/wrapper
+
+*.bak
