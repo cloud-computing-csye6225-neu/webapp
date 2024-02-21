@@ -18,6 +18,9 @@ echo "DB_PASSWORD=$DB_PASSWORD" >> .env
 echo "Moving .env file to /tmp/"
 sudo mv .env /opt/
 
+# setting enforce to 0
+sudo setenforce 0
+
 # updating the permissions of the jar to user and password
 sudo mv /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar /opt/ && sudo chown csye6225: /opt/healthCheckAPI-0.0.1-SNAPSHOT.jar
 sudo mv /tmp/csye6225.service /opt/ && sudo chown csye6225: /opt/csye6225.service && sudo mv /opt/csye6225.service /etc/systemd/system
