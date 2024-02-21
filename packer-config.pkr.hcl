@@ -61,53 +61,24 @@ build {
     "source.googlecompute.custom-mi"
   ]
 
- provisioner "shell" {
-  inline = [
-    "echo 'DB_URL=${var.DB_URL}' | sudo tee -a /etc/environment",
-    "echo 'DB_USERNAME=${var.DB_USERNAME}' | sudo tee -a /etc/environment",
-    "echo 'DB_PASSWORD=${var.DB_PASSWORD}' | sudo tee -a /etc/environment",
-    "source /etc/environment"
-  ]
-}
-
-  provisioner "shell" {
-    inline = [
-      "sudo adduser csye6225 --shell /usr/sbin/nologin",
-      "sudo usermod -aG csye6225 csye6225"
-    ]
-  }
   provisioner "shell" {
     script = "pre-req.sh"
+    args =['${var.DB_URL}', '${var.DB_USERNAME}', '${var.DB_PASSWORD}']
   }
 
 
   provisioner "file" {
     source      = "target/healthCheckAPI-0.0.1-SNAPSHOT.jar"
-    destination = "/tmp/"
+    destination = "/opt/"
   }
 
   provisioner "file" {
     source      = "csye6225.service"
-    destination = "/tmp/"
-  }
-
-  provisioner "shell" {
-    inline = [
-      "sudo chown csye6225: /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar",
-      "sudo chown csye6225: /tmp/csye6225.service",
-      "sudo mv /tmp/csye6225.service /etc/systemd/system"
-    ]
+    destination = "/opt/"
   }
 
   provisioner "shell"{
-    script = "addEnv.sh"
-  }
-
-  provisioner "shell" {
-    inline = [
-    "sudo systemctl daemon-reload",
-    "sudo systemctl start csye6225",
-    "sudo systemctl enable csye6225"
-    ]
+    script = "env-setup.sh"
+    args =['${var.DB_URL}', '${var.DB_USERNAME}', '${var.DB_PASSWORD}']
   }
 }
