@@ -5,7 +5,8 @@ After=network.target
 [Service]
 User=csye6225
 Group=csye6225
-ExecStart=java -jar /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar
+EnvironmentFile=/opt/.env
+ExecStart=java -jar /opt/healthCheckAPI-0.0.1-SNAPSHOT.jar
 SuccessExitStatus=143
  
 [Install]
