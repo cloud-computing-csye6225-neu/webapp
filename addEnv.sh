@@ -2,7 +2,9 @@
 
 # Create a new .env file
 touch .env
-
+echo $1
+echo $2
+echo $3
 DB_URL=$1
 DB_USERNAME=$2
 DB_PASSWORD=$3
