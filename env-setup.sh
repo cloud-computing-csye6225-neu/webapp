@@ -19,9 +19,8 @@
 # mv .env /tmp/
 
 # updating the permissions of the jar to user and password
-sudo chown csye6225: /opt/healthCheckAPI-0.0.1-SNAPSHOT.jar
-sudo chown csye6225: /opt/csye6225.service
-sudo mv /opt/csye6225.service /etc/systemd/system
+sudo mv /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar /opt/ && sudo chown csye6225: /opt/healthCheckAPI-0.0.1-SNAPSHOT.jar
+sudo mv /tmp/csye6225.service /opt/ && sudo chown csye6225: /opt/csye6225.service && sudo mv /opt/csye6225.service /etc/systemd/system
 
 # add the service to systemd
 sudo systemctl daemon-reload
