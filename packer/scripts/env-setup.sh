@@ -15,7 +15,7 @@ echo "Moving .env file to /opt/"
 sudo mv .env /opt/
 
 # setting enforce to 0
-sudo setenforce 0
+echo "SELINUX=permissive" | sudo tee /etc/selinux/config
 
 # updating the permissions of the jar to user and password
 sudo chown csye6225: /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar
