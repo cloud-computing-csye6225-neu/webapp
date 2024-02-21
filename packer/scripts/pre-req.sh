@@ -1,6 +1,6 @@
 #!/bin/bash
  
-# sudo dnf update -y
+sudo dnf update -y
 # sudo dnf upgrade -y
  
 # Install Java 17
@@ -31,12 +31,12 @@ MYSQL_DB_USER_NAME=$DB_USERNAME
 MYSQL_ROOT_PASSWORD=$DB_PASSWORD
  
 # Set MySQL root password non-interactively
-sudo mysqladmin -u root password "${MYSQL_ROOT_PASSWORD}"
+sudo mysqladmin -u "${MYSQL_DB_USER_NAME}" password "${MYSQL_ROOT_PASSWORD}"
  
 # Secure MySQL installation (additional configurations)
 sudo mysql -u root -p"${MYSQL_ROOT_PASSWORD}" <<EOF
 DELETE FROM mysql.user WHERE User='';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+DELETE FROM mysql.user WHERE User='${MYSQL_DB_USER_NAME}' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
 DROP DATABASE IF EXISTS test;
 DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';
 FLUSH PRIVILEGES;
@@ -46,7 +46,7 @@ EOF
 sudo adduser csye6225 --shell /usr/sbin/nologin
 
 # add system variables. used for startup
-echo "DB_URL=${MYSQL_DB_URL}" | sudo tee -a /etc/environment
-echo "DB_USERNAME=${MYSQL_DB_USER_NAME}" | sudo tee -a /etc/environment
-echo "DB_PASSWORD=${MYSQL_ROOT_PASSWORD}" | sudo tee -a /etc/environment
-source /etc/environment
+# echo "DB_URL=${MYSQL_DB_URL}" | sudo tee -a /etc/environment
+# echo "DB_USERNAME=${MYSQL_DB_USER_NAME}" | sudo tee -a /etc/environment
+# echo "DB_PASSWORD=${MYSQL_ROOT_PASSWORD}" | sudo tee -a /etc/environment
+# source /etc/environment

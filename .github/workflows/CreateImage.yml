@@ -56,7 +56,10 @@ jobs:
           version: "latest"
     
       - name: Init Packer
-        run : packer init .
+        run : packer init packer
 
+      - name: validate packer 
+        run: packer validate -var "DB_URL=${DB_URL}" -var "DB_USERNAME=${DB_USERNAME}" -var "DB_PASSWORD=${DB_PASSWORD}" packer/packer-config.pkr.hcl
+        
       - name: build Image
-        run : packer build -var "DB_URL=${DB_URL}" -var "DB_USERNAME=${DB_USERNAME}" -var "DB_PASSWORD=${DB_PASSWORD}" packer-config.pkr.hcl 
+        run : packer build -var "DB_URL=${DB_URL}" -var "DB_USERNAME=${DB_USERNAME}" -var "DB_PASSWORD=${DB_PASSWORD}" packer/packer-config.pkr.hcl 
