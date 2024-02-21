@@ -100,7 +100,7 @@ build {
   }
 
   provisioner "shell"{
-    script = "addEnv.sh ${var.DB_URL} ${var.DB_USERNAME} ${var.DB_PASSWORD}"
+    script = "addEnv.sh"
   }
 
   provisioner "shell" {
