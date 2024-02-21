@@ -63,7 +63,7 @@ build {
 
   provisioner "shell" {
     script = "pre-req.sh"
-    args =['${var.DB_URL}', '${var.DB_USERNAME}', '${var.DB_PASSWORD}']
+    args =["${var.DB_URL}", "${var.DB_USERNAME}", "${var.DB_PASSWORD}"]
   }
 
 
@@ -79,6 +79,6 @@ build {
 
   provisioner "shell"{
     script = "env-setup.sh"
-    args =['${var.DB_URL}', '${var.DB_USERNAME}', '${var.DB_PASSWORD}']
+    args =["${var.DB_URL}", "${var.DB_USERNAME}", "${var.DB_PASSWORD}"]
   }
 }
