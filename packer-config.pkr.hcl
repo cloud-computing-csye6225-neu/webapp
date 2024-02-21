@@ -77,7 +77,7 @@ build {
     ]
   }
   provisioner "shell" {
-    script = "pre-req.sh"
+    script = "pre-req.sh ${var.DB_PASSWORD}"
   }
 
 
@@ -100,7 +100,7 @@ build {
   }
 
   provisioner "shell"{
-    script = "addEnv.sh"
+    script = "addEnv.sh ${var.DB_URL} ${var.DB_USERNAME} ${var.DB_PASSWORD}"
   }
 
   provisioner "shell" {
