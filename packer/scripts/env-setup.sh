@@ -6,8 +6,8 @@ DB_USERNAME=$DB_USERNAME
 DB_PASSWORD=$DB_PASSWORD
 
 # Append variables to .env file
-echo "DB_HOST=$DB_URL" >> .env
-echo "DB_USER=$DB_USERNAME" >> .env
+echo "DB_URL=$DB_URL" >> .env
+echo "DB_USERNAME=$DB_USERNAME" >> .env
 echo "DB_PASSWORD=$DB_PASSWORD" >> .env
 
 # Move .env file to /opt/
