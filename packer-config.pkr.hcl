@@ -63,9 +63,9 @@ build {
 
   provisioner "shell" {
     environment_vars = [
-      DB_URL="${var.DB_URL}",
-      DB_USERNAME="${var.DB_USERNAME}",
-      DB_PASSWORD="${var.DB_PASSWORD}"
+      "DB_URL=${var.DB_URL}",
+      "DB_USERNAME=${var.DB_USERNAME}",
+     " DB_PASSWORD=${var.DB_PASSWORD}"
     ]
     script = "pre-req.sh"
   }
@@ -84,8 +84,8 @@ build {
   provisioner "shell"{
     environment_vars = [
       "DB_URL=${var.DB_URL}",
-      "DB_USERNAME="${var.DB_USERNAME}",
-      "DB_PASSWORD="${var.DB_PASSWORD}"
+      "DB_USERNAME=${var.DB_USERNAME}",
+      "DB_PASSWORD=${var.DB_PASSWORD}"
     ]
     script = "env-setup.sh"
   }
