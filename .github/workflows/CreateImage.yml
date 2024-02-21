@@ -47,7 +47,7 @@ jobs:
           mysql -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USERNAME -p$DB_PASSWORD
 
       - name: Build Maven
-        run: mvn clean install | ls -al
+        run: mvn clean -B package | ls -al
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
