@@ -3,7 +3,9 @@ Description=Your Spring Boot Application
 After=network.target
  
 [Service]
-ExecStart=java -jar /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar
+User=csye6225
+Group=csye6225
+ExecStart=java -XX:-PaX -jar /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar
 Environment=DB_URL=jdbc:mysql://localhost:3306/health?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
 Environment=DB_USERNAME=root
 Environment=DB_PASSWORD=root
