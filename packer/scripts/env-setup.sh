@@ -8,13 +8,14 @@ DB_USERNAME=$DB_USERNAME
 DB_PASSWORD=$DB_PASSWORD
 
 # Append variables to .env file
-echo "DB_URL=$DB_URL" >> .env
+echo "DB_URL='$DB_URL'" >> .env
 echo "DB_USERNAME=$DB_USERNAME" >> .env
 echo "DB_PASSWORD=$DB_PASSWORD" >> .env
 
 # Move .env file to /opt/
 echo "Moving .env file to /opt/"
-sudo mv .env /tmp/
+sudo mv .env /opt/
+sudo chown csye6225: /opt/.env
 
 # setting enforce to 0
 echo "SELINUX=permissive" | sudo tee /etc/selinux/config
@@ -26,6 +27,5 @@ sudo chown csye6225: /tmp/csye6225.service
 sudo mv /tmp/csye6225.service /etc/systemd/system
 
 # add the service to systemd
-sudo systemctl daemon-reload
-sudo systemctl start csye6225
+sudo systemctl daemon-reload 
 sudo systemctl enable csye6225
