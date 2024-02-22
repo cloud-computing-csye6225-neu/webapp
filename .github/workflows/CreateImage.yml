@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DB_DATABASE: health
       DB_USERNAME: ${{secrets.DATABASE_USERNAME}}
       DB_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
       DB_URL: ${{secrets.DATABASE_URL}}
@@ -44,9 +43,7 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{secrets.GCP_CREDENTIALS}}'
-
-      - name: Build Maven
-        run: ls -al 
+          
       - name: start DB
         run:
           sudo /etc/init.d/mysql start
