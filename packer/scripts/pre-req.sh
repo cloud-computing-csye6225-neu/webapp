@@ -48,7 +48,7 @@ EOF
 sudo adduser csye6225 --shell /usr/sbin/nologin
 
 # add system variables. used for startup
-# echo "DB_URL=${MYSQL_DB_URL}" | sudo tee -a /etc/environment
-# echo "DB_USERNAME=${MYSQL_DB_USER_NAME}" | sudo tee -a /etc/environment
-# echo "DB_PASSWORD=${MYSQL_ROOT_PASSWORD}" | sudo tee -a /etc/environment
-# source /etc/environment
+echo "DB_URL=${MYSQL_DB_URL}" | sudo tee -a /etc/environment
+echo "DB_USERNAME=${MYSQL_DB_USER_NAME}" | sudo tee -a /etc/environment
+echo "DB_PASSWORD=${MYSQL_ROOT_PASSWORD}" | sudo tee -a /etc/environment
+source /etc/environment
