@@ -2,7 +2,7 @@
 
 set -e
 
-sudo dnf update -y
+# sudo dnf update -y
 # sudo dnf upgrade -y
  
 # Install Java 17
