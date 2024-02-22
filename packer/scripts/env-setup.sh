@@ -14,7 +14,7 @@ echo "DB_PASSWORD=$DB_PASSWORD" >> .env
 
 # Move .env file to /opt/
 echo "Moving .env file to /opt/"
-sudo mv .env /opt/
+sudo mv .env /tmp/
 
 # setting enforce to 0
 echo "SELINUX=permissive" | sudo tee /etc/selinux/config
