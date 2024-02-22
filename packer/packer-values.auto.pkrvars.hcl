@@ -1,6 +1,0 @@
-image_name          = "my-custom-instance"
-project_id          = "csye6225-assignemnt-3"
-network             = "default"
-ssh_username        = "packer"
-zone                = "us-central1-c"
-source_image_family = "centos-stream-8"
