@@ -52,7 +52,7 @@ jobs:
       - name: Build Maven
         run: mvn clean -B package && ls -al && pwd && ls -al target 
 
-      - name: Setup `packer`
+      - name: Setup packer
         uses: hashicorp/setup-packer@main
         id: setup
         with:
