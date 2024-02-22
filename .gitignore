@@ -93,3 +93,4 @@ mvnw.cmd
 .mvn/wrapper
 
 *.bak
+*.auto.pkvars.hcl
