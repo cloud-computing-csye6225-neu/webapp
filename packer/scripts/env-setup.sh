@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Create a new .env file
 DB_URL=$DB_URL
 DB_USERNAME=$DB_USERNAME
