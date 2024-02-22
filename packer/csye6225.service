@@ -1,10 +1,11 @@
 [Unit]
 Description=Your Spring Boot Application
 After=network.target
- 
+
 [Service]
 User=csye6225
 Group=csye6225
+EnvironmentFile=/opt/.env
 Type=simple
 ExecStart=java -jar /opt/healthCheckAPI-0.0.1-SNAPSHOT.jar
 Restart=always
