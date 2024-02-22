@@ -22,6 +22,12 @@ jobs:
       PASSWORD: ${{secrets.PASSWORD}}
       UPDATED_FIRST_NAME: ${{secrets.UPDATED_FIRST_NAME}}
       UPDATED_LAST_NAME: ${{secrets.UPDATED_LAST_NAME}}
+      PKR_VAR_project_id: ${{secrets.PROJECT_ID}}
+      PKR_VAR_source_image_family: ${{secrets.SOURCE_IMAGE_FAMILY}}
+      PKR_VAR_zone: ${{secrets.IMAGE_ZONE}}
+      PKR_VAR_ssh_username: ${{secrets.SSH_USERNAME}}
+      PKR_VAR_network: ${{secrets.IMAGE_NETWORK}}
+      PKR_VAR_image_name: ${{secrets.IMAGE_NAME}}
 
     steps:
       - name: Checkout source code
@@ -58,8 +64,11 @@ jobs:
       - name: Init Packer
         run : packer init packer
 
+      - name: check the packer template
+        run: packer fmt --check  packer/packer-config.pkr.hcl
+
       - name: validate packer 
-        run: packer validate -var "DB_URL=${DB_URL}" -var "DB_USERNAME=${DB_USERNAME}" -var "DB_PASSWORD=${DB_PASSWORD}" packer/packer-config.pkr.hcl
-        
+        run: packer validate -var "DB_URL=${DB_URL}" -var "DB_USERNAME=${DB_USERNAME}" -var "DB_PASSWORD=${DB_PASSWORD}" packer
+
       - name: build Image
-        run : packer build -var "DB_URL=${DB_URL}" -var "DB_USERNAME=${DB_USERNAME}" -var "DB_PASSWORD=${DB_PASSWORD}" packer/packer-config.pkr.hcl 
+        run : packer build -var "DB_URL=${DB_URL}" -var "DB_USERNAME=${DB_USERNAME}" -var "DB_PASSWORD=${DB_PASSWORD}" packer

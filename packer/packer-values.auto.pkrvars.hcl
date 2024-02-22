@@ -1,0 +1,6 @@
+image_name          = "my-custom-instance"
+project_id          = "cyse-6225"
+network             = "default"
+ssh_username        = "packer"
+zone                = "us-central1-c"
+source_image_family = "centos-stream-8"

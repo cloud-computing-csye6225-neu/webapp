@@ -7,27 +7,6 @@ packer {
   }
 }
 
-variable "zone" {
-  type    = string
-  default = "us-east1-b"
-}
-variable "project_id" {
-  type    = string
-  default = "csye6225-assignemnt-3"
-}
-variable "source_image_family" {
-  type    = string
-  default = "centos-stream-8"
-}
-variable "network" {
-  type    = string
-  default = "default"
-}
-variable "source_ssh_username" {
-  type    = string
-  default = "packer"
-}
-
 variable "DB_URL" {
   type = string
 }
@@ -40,18 +19,13 @@ variable "DB_PASSWORD" {
   type = string
 }
 
-variable "image_name" {
-  type = string
-  default = "csye6225-{{timestamp}}"
-}
-
 source "googlecompute" "custom-mi" {
   project_id          = var.project_id
-  source_image_family = var.source_image_family
   zone                = var.zone
   network             = var.network
-  ssh_username        = var.source_ssh_username
   image_name          = var.image_name
+  ssh_username        = var.ssh_username
+  source_image_family = var.source_image_family
   # disk_size              = "20"
   # disk_type              = "pd-standard"
   # image_description      = "A custom image with webapp pre-installed"
@@ -82,7 +56,7 @@ build {
   }
 
   provisioner "file" {
-    source      = "csye6225.service"
+    source      = "packer/csye6225.service"
     destination = "/tmp/"
   }
 
