@@ -9,8 +9,9 @@ on:
 
 jobs:
   validate-packer-build:
-     runs-on: ubuntu-latest
-     env:
+    runs-on: ubuntu-latest
+    
+    env:
       DB_USERNAME: ${{secrets.DATABASE_USERNAME}}
       DB_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
       DB_URL: ${{secrets.DATABASE_URL}}
