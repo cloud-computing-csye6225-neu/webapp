@@ -1,14 +1,14 @@
-name: check packer
-
+name: paker image creation
 on:
   pull_request:
     types:
-      - opened
+      - closed
     branches:
       - main
 
 jobs:
-  create-build-jar:
+  create-custom-image:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     env:
