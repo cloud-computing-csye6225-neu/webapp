@@ -1,4 +1,4 @@
-name: check packer
+name: check packer and test build 
 
 on:
   pull_request:
