@@ -2,12 +2,12 @@ name: packer validation
 on:
   pull_request:
     types:
-      - closed
+      - opened
     branches:
       - main
 
 jobs:
-  check packer build:
+  check-packer-build:
     runs-on: ubuntu-latest
 
     env:
