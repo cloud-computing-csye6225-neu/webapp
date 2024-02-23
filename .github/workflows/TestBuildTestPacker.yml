@@ -48,12 +48,6 @@ jobs:
           sudo /etc/init.d/mysql start
           mysql -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USERNAME -p$DB_PASSWORD
       
-      - name: compile Maven
-        run: mvn clean compile --file pom.xml 
-      
-      - name: Build Maven
-        run: mvn clean test --file pom.xml
-      
       - name: Build Maven
         run: mvn clean -B package && ls -al && pwd && ls -al target 
 
