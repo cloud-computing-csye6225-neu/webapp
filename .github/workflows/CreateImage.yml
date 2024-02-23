@@ -1,4 +1,4 @@
-name: paker image creation
+name: packer image creation
 on:
   pull_request:
     types:
