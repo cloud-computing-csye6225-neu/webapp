@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  validate-packer-validate-build:
+  validate-packer-build:
      runs-on: ubuntu-latest
      env:
       DB_USERNAME: ${{secrets.DATABASE_USERNAME}}
