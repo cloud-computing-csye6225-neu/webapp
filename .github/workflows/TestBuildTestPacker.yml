@@ -1,16 +1,15 @@
-name: check packer and test build 
-
+name: packer validation
 on:
   pull_request:
     types:
-      - opened
+      - closed
     branches:
       - main
 
 jobs:
-  validate-packer-build:
+  check packer build:
     runs-on: ubuntu-latest
-    
+
     env:
       DB_USERNAME: ${{secrets.DATABASE_USERNAME}}
       DB_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
@@ -28,7 +27,7 @@ jobs:
       PKR_VAR_network: ${{secrets.IMAGE_NETWORK}}
       PKR_VAR_image_name: ${{secrets.IMAGE_NAME}}
 
-     steps:
+    steps:
       - name: Checkout source code
         uses: actions/checkout@v3
 
@@ -39,29 +38,28 @@ jobs:
           distribution: 'temurin'
           cache: maven
       
+      - name: setup google config
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{secrets.GCP_CREDENTIALS}}'
+          
       - name: start DB
         run:
           sudo /etc/init.d/mysql start
           mysql -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USERNAME -p$DB_PASSWORD
       
-      - name: compile the source code
-        run: mvn clean compile --file pom.xml   
+      - name: compile Maven
+        run: mvn clean compile --file pom.xml 
       
-      - name: test using Maven
-        run: mvn clean test --file pom.xml  
+      - name: Build Maven
+        run: mvn clean test --file pom.xml
 
-      - name: Setup `packer`
-        uses: hashicorp/setup-packer@main
-        id: setup
-        with:
-          version: "latest"
-          
       - name: Setup packer
         uses: hashicorp/setup-packer@main
         id: setup
         with:
           version: "latest"
-
+    
       - name: Init Packer
         run : packer init packer
 
@@ -70,6 +68,3 @@ jobs:
 
       - name: validate packer 
         run: packer validate -var "DB_URL=${DB_URL}" -var "DB_USERNAME=${DB_USERNAME}" -var "DB_PASSWORD=${DB_PASSWORD}" packer
-
-      - name: build Image
-        run : packer build -var "DB_URL=${DB_URL}" -var "DB_USERNAME=${DB_USERNAME}" -var "DB_PASSWORD=${DB_PASSWORD}" packer
