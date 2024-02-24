@@ -7,9 +7,9 @@ packer {
   }
 }
 
-variable "DB_URL" {
-  type = string
-}
+#variable "DB_URL" {
+# type = string
+#}
 
 variable "DB_USERNAME" {
   type = string
