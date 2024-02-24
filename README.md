@@ -74,4 +74,3 @@ The workflow performs the following steps:
 3. start mysql
 4. Build Maven: `mvn -B package --file pom.xml`
 
-
