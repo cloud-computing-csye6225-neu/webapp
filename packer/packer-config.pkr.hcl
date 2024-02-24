@@ -12,7 +12,8 @@ variable "DB_URL" {
 }
 
 variable "DB_USERNAME" {
-  type = string
+     
+      type = string
 }
 
 variable "DB_PASSWORD" {
