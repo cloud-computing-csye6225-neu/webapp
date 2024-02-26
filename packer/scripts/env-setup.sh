@@ -14,15 +14,15 @@ echo "DB_PASSWORD=$DB_PASSWORD" >> .env
 
 # Move .env file to /opt/
 echo "Moving .env file to /opt/"
-sudo mv .env /opt/
-sudo chown csye6225: /opt/.env
+sudo mv .env /home/csye6225/
+sudo chown csye6225: /home/csye6225/.env
 
 # setting enforce to 0
 echo "SELINUX=permissive" | sudo tee /etc/selinux/config
 
 # updating the permissions of the jar to user and password
 sudo chown csye6225: /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar
-sudo mv /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar /opt/
+sudo mv /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar /home/csye6225/
 sudo chown csye6225: /tmp/csye6225.service 
 sudo mv /tmp/csye6225.service /etc/systemd/system
 
