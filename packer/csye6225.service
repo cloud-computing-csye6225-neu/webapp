@@ -5,9 +5,8 @@ After=network.target
 [Service]
 User=csye6225
 Group=csye6225
-EnvironmentFile=/home/csye6225/.env
 Type=simple
-ExecStart=java -jar /home/csye6225/healthCheckAPI-0.0.1-SNAPSHOT.jar
+ExecStart=java -jar /home/csye6225/healthCheckAPI-0.0.1-SNAPSHOT.jar --spring.config.location=/home/csye6225/application.properties
 Restart=always
 
 [Install]
