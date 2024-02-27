@@ -19,36 +19,42 @@ source /etc/environment
 # Install Maven
 echo "Installing Maven"
 sudo dnf install maven -y
-  
-# Install MySQL
-echo "Installing MySQL"
-sudo dnf install mysql-server -y
- 
-# Start and enable MySQL service
-sudo systemctl start mysqld
-sudo systemctl enable mysqld
-
-MYSQL_DB_URL=$DB_URL
-MYSQL_DB_USER_NAME=$DB_USERNAME
-MYSQL_ROOT_PASSWORD=$DB_PASSWORD
- 
-# Set MySQL root password non-interactively
-sudo mysqladmin -u "${MYSQL_DB_USER_NAME}" password "${MYSQL_ROOT_PASSWORD}"
- 
-# Secure MySQL installation (additional configurations)
-sudo mysql -u root -p"${MYSQL_ROOT_PASSWORD}" <<EOF
-DELETE FROM mysql.user WHERE User='';
-DELETE FROM mysql.user WHERE User='${MYSQL_DB_USER_NAME}' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-DROP DATABASE IF EXISTS test;
-DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';
-FLUSH PRIVILEGES;
-EOF
 
 # creating a no login user  
 sudo adduser csye6225 --shell /usr/sbin/nologin
 
+
+########################################################################
+#              UPDATED THE DATABASE TO NEW GCP INSTANCE                #
+########################################################################
+
+# Install MySQL
+# echo "Installing MySQL"
+# sudo dnf install mysql-server -y
+ 
+# Start and enable MySQL service
+# sudo systemctl start mysqld
+# sudo systemctl enable mysqld
+
+# MYSQL_DB_URL=$DB_URL
+# MYSQL_DB_USER_NAME=$DB_USERNAME
+# MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+ 
+# # Set MySQL root password non-interactively
+# sudo mysqladmin -u "${MYSQL_DB_USER_NAME}" password "${MYSQL_ROOT_PASSWORD}"
+ 
+# # Secure MySQL installation (additional configurations)
+# sudo mysql -u root -p"${MYSQL_ROOT_PASSWORD}" <<EOF
+# DELETE FROM mysql.user WHERE User='';
+# DELETE FROM mysql.user WHERE User='${MYSQL_DB_USER_NAME}' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+# DROP DATABASE IF EXISTS test;
+# DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';
+# FLUSH PRIVILEGES;
+# EOF
+
+
 # add system variables. used for startup
-echo "export DB_URL=${MYSQL_DB_URL}" | sudo tee -a /etc/environment
-echo "export DB_USERNAME=${MYSQL_DB_USER_NAME}" | sudo tee -a /etc/environment
-echo "export DB_PASSWORD=${MYSQL_ROOT_PASSWORD}" | sudo tee -a /etc/environment
-source /etc/environment
+# echo "export DB_URL=${MYSQL_DB_URL}" | sudo tee -a /etc/environment
+# echo "export DB_USERNAME=${MYSQL_DB_USER_NAME}" | sudo tee -a /etc/environment
+# echo "export DB_PASSWORD=${MYSQL_ROOT_PASSWORD}" | sudo tee -a /etc/environment
+# source /etc/environment

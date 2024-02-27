@@ -41,11 +41,13 @@ build {
   ]
 
   provisioner "shell" {
-    environment_vars = [
-      "DB_URL=${var.DB_URL}",
-      "DB_USERNAME=${var.DB_USERNAME}",
-      "DB_PASSWORD=${var.DB_PASSWORD}"
-    ]
+
+    # Migrated the DB to the other instance
+    # environment_vars = [
+    #   "DB_URL=${var.DB_URL}",
+    #   "DB_USERNAME=${var.DB_USERNAME}",
+    #   "DB_PASSWORD=${var.DB_PASSWORD}"
+    # ]
     script = "packer/scripts/pre-req.sh"
   }
 
