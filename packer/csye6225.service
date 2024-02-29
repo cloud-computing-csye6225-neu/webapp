@@ -1,6 +1,5 @@
 [Unit]
 Description=Your Spring Boot Application
-ConditionPathExists=/home/csye6225/application.properties
 After=network.target
 
 [Service]
