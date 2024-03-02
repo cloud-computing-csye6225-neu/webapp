@@ -62,6 +62,11 @@ build {
     destination = "/tmp/"
   }
 
+  provisioner "file" {
+    source      = "packer/csye6225-path.path"
+    destination = "/tmp/"
+  }
+
   provisioner "shell" {
     environment_vars = [
       "DB_URL=${var.DB_URL}",
