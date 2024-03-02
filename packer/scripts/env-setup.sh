@@ -11,9 +11,13 @@ sudo mv /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar /home/csye6225/
 sudo chown csye6225: /tmp/csye6225.service 
 sudo mv /tmp/csye6225.service /etc/systemd/system
 
+sudo chown csye6225: /tmp/csye6225-path.path
+sudo mv /tmp/csye6225-path.path /etc/systemd/system
+
 # add the service to systemd
 sudo systemctl daemon-reload 
 sudo systemctl enable csye6225
+sudo systemctl enable csye6225-path
 
 ########################################################################
 #              UPDATED THE DATABASE TO NEW GCP INSTANCE                #

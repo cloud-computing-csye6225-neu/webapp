@@ -1,0 +1,8 @@
+[Unit]
+Description=Path check for Your Spring Boot Application
+
+[Path]
+PathExists=/home/csye6225/application.properties
+
+[Install]
+WantedBy=multi-user.target
