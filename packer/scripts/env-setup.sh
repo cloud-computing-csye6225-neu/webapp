@@ -16,8 +16,8 @@ sudo mv /tmp/csye6225-path.path /etc/systemd/system
 
 # add the service to systemd
 sudo systemctl daemon-reload 
-sudo systemctl enable csye6225
-sudo systemctl enable csye6225-path
+sudo systemctl enable csye6225.service
+sudo systemctl enable csye6225-path.path
 
 ########################################################################
 #              UPDATED THE DATABASE TO NEW GCP INSTANCE                #
