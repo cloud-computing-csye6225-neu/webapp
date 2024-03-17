@@ -5,6 +5,13 @@ set -e
 # setting enforce to 0
 echo "SELINUX=permissive" | sudo tee /etc/selinux/config
 
+# Install google opsagent
+curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+
+# update the configuration file
+mv -f /tmp/config.yml /etc/google-cloud-ops-agent/
+
 # updating the permissions of the jar to user and password
 sudo chown csye6225: /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar
 sudo mv /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar /home/csye6225/
