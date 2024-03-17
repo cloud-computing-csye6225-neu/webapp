@@ -75,4 +75,9 @@ build {
     ]
     script = "packer/scripts/env-setup.sh"
   }
+
+  provisioner "file" {
+    source      = "packer/google-cloud-ops-agent-config/config.yaml"
+    destination = "/tmp/"
+  }
 }
