@@ -24,6 +24,7 @@ sudo mv /tmp/csye6225-path.path /etc/systemd/system
 # add the service to systemd
 sudo systemctl daemon-reload 
 sudo systemctl enable csye6225.service
+sudo systemctl restart google-cloud-ops-agent
 sudo systemctl enable csye6225-path.path
 
 ########################################################################
