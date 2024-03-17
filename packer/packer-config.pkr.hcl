@@ -67,6 +67,11 @@ build {
     destination = "/tmp/"
   }
 
+  provisioner "file" {
+    source      = "packer/google-cloud-ops-agent-config/config.yaml"
+    destination = "/tmp/"
+  }
+
   provisioner "shell" {
     environment_vars = [
       "DB_URL=${var.DB_URL}",
@@ -76,8 +81,4 @@ build {
     script = "packer/scripts/env-setup.sh"
   }
 
-  provisioner "file" {
-    source      = "packer/google-cloud-ops-agent-config/config.yaml"
-    destination = "/tmp/"
-  }
 }
