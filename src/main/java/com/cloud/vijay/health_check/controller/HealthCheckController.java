@@ -1,8 +1,12 @@
 package com.cloud.vijay.health_check.controller;
 
+import com.cloud.vijay.health_check.HealthCheckApiApplication;
 import com.cloud.vijay.health_check.service.HealthCheckService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,18 +18,20 @@ public class HealthCheckController {
 
     @Autowired
     private HealthCheckService healthCheckService;
+    private static final Logger LOGGER = LogManager.getLogger(HealthCheckApiApplication.class);
 
     @GetMapping("/healthz")
     public void checkDBConection(HttpServletRequest request, @RequestParam(required = false) String requestBody, @RequestHeader(value = HttpHeaders.CONTENT_LENGTH, required = false) Long contentLength, HttpServletResponse response) {
-
+        LOGGER.info("checking the DB Connection");
         if ((requestBody != null && !requestBody.isEmpty()) || (contentLength != null && contentLength != 0L) || request.getParameterMap().size() > 0 || request.getHeader("Authorization") != null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-
+        
         if (!healthCheckService.isDBConnected()) {
             response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
+            LOGGER.info("Service Active");
         setHeaders(response);
     }
 
