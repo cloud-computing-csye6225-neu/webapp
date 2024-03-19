@@ -13,7 +13,7 @@ sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 # update the configuration file
 echo "updating the agent configuration"
 sudo mv -f /tmp/config.yaml /etc/google-cloud-ops-agent/
-
+sudo chown -R csye6225:csye6225 /etc/google-cloud-ops-agent/
 #creating logs folder
 sudo mkdir -p /var/log/webapp/
 

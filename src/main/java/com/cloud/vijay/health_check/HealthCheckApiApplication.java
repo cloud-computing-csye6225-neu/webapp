@@ -12,7 +12,6 @@ public class HealthCheckApiApplication {
     public static void main(String[] args) {
         LOGGER.info("Debug message");
         SpringApplication.run(HealthCheckApiApplication.class, args);
-
     }
 
 }
