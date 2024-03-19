@@ -15,7 +15,11 @@ echo "updating the agent configuration"
 sudo mv -f /tmp/config.yaml /etc/google-cloud-ops-agent/
 
 #creating logs folder
-sudo mkdir -p /var/logs/webapp/
+sudo mkdir -p /var/log/webapp/
+
+#update the permissions of the logs folder
+sudo chown csye6225:csye6225 /var/log/webapp/
+sudo chmod -R 755 /var/log/webapp
 
 # updating the permissions of the jar to user and password
 sudo chown csye6225: /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar
