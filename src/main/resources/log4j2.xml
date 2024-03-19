@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="INFO">
     <Appenders>
-        <File name="File" fileName="logs/application.log" append="true">
+        <File name="File" fileName="/var/logs/webapp/application.log" append="true">
             <JsonLayout compact="true" eventEol="true" properties="true"/>
         </File>
         <Console name="Console" target="SYSTEM_OUT">

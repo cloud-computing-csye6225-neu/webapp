@@ -6,11 +6,16 @@ set -e
 echo "SELINUX=permissive" | sudo tee /etc/selinux/config
 
 # Install google opsagent
+echo "Instaling google ops-agent"
 curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 
 # update the configuration file
+echo "updating the agent configuration"
 sudo mv -f /tmp/config.yaml /etc/google-cloud-ops-agent/
+
+#creating logs folder
+sudo mkdir -p /var/logs/webapp/
 
 # updating the permissions of the jar to user and password
 sudo chown csye6225: /tmp/healthCheckAPI-0.0.1-SNAPSHOT.jar
