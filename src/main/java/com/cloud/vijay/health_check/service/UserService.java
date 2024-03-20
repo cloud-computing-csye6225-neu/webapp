@@ -9,6 +9,8 @@ import com.cloud.vijay.health_check.exception.UnAuthorizedException;
 import com.cloud.vijay.health_check.model.User;
 import com.cloud.vijay.health_check.util.CommonUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -21,18 +23,22 @@ import java.sql.Timestamp;
 public class UserService {
     @Autowired
     private UserDao userDao;
+    private static final Logger LOGGER = LogManager.getLogger(UserService.class);
 
     public UserDTO addUser(UserDTO userDTO, HttpServletRequest request) throws Exception {
 
-        if (!CommonUtil.isValidPostRequest(request) || userDTO.getId() != null)
-            throw new BadRequestException("Error ouccured while validating the request");
+        if (!CommonUtil.isValidPostRequest(request) || userDTO.getId() != null) {
+            LOGGER.error("Error occured while validating the request");
+            throw new BadRequestException("Error occured while validating the request");
+        }
 
         User user = userDao.getUserwithUserName(userDTO.getUserName());
-        if (user != null)
+        if (user != null) {
+            LOGGER.error("User already exists");
             throw new ConflictException();
-        else
+        }else {
             user = new User();
-
+        }
         userDTO.setCreatedOn(new Timestamp(System.currentTimeMillis()));
         userDTO.setModifiedOn(new Timestamp(System.currentTimeMillis()));
         userDTO.setPassword(CommonUtil.getHashedPassword(userDTO.getPassword()));
@@ -49,8 +55,10 @@ public class UserService {
         String authorizationHeader = request.getHeader("Authorization");
         Pair<String, String> creds = CommonUtil.getuserCredsFromToken(authorizationHeader);
         User user = userDao.getUserwithUserName(creds.getFirst());
-        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword()))
+        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword())) {
+            LOGGER.error("User is not UnAuthorizedException");
             throw new UnAuthorizedException();
+        }
         BeanUtils.copyProperties(user, userDTO);
         return userDTO;
     }
@@ -58,14 +66,18 @@ public class UserService {
     public void updateUser(UpdateUserDTO updateUserDTO, HttpServletRequest request) throws Exception {
 
         String authorizationHeader = request.getHeader("Authorization");
-        if (!CommonUtil.isValidPutRequest(request) || !CommonUtil.isvalidUpdateUserObject(updateUserDTO) || authorizationHeader == null)
+        if (!CommonUtil.isValidPutRequest(request) || !CommonUtil.isvalidUpdateUserObject(updateUserDTO) || authorizationHeader == null) {
+            LOGGER.error("Error occured while validating the request");
             throw new BadRequestException("error occured while validating the request");
+        }
 
         Pair<String, String> creds = CommonUtil.getuserCredsFromToken(authorizationHeader);
 
         User user = userDao.getUserwithUserName(creds.getFirst());
-        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword()))
+        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword())) {
+            LOGGER.error("Error occured while validating credentials");
             throw new UnAuthorizedException("Error occured while validating credentials");
+        }
 
         if (updateUserDTO.getPassword() != null)
             updateUserDTO.setPassword(CommonUtil.getHashedPassword(updateUserDTO.getPassword()));
