@@ -31,8 +31,10 @@ public class UserController {
     @GetMapping("/v1/user/self")
     public ResponseEntity<UserDTO> getSelfDetails(HttpServletRequest request) throws Exception {
 
-        if (CommonUtil.hasRequestBody(request))
+        if (CommonUtil.hasRequestBody(request)) {
+            LOGGER.error("Bad Request");
             throw new BadRequestException();
+        }
 
         UserDTO userDTO = userService.getUserDTO(request);
         LOGGER.info("Fetched User Details");
