@@ -7,6 +7,8 @@ import com.cloud.vijay.health_check.service.UserService;
 import com.cloud.vijay.health_check.util.CommonUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +19,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
     @PostMapping(path = "/v1/user")
     public ResponseEntity<UserDTO> addUser(@RequestBody @Valid UserDTO userDTO, HttpServletRequest request) throws Exception {
         userDTO = userService.addUser(userDTO, request);
-
+        LOGGER.info("Successfully Created User");
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
@@ -32,7 +35,7 @@ public class UserController {
             throw new BadRequestException();
 
         UserDTO userDTO = userService.getUserDTO(request);
-
+        LOGGER.info("Fetched User Details");
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
@@ -40,17 +43,19 @@ public class UserController {
     public ResponseEntity<Void> updateSelfDetails(@RequestBody @Valid UpdateUserDTO updateUserDTO, HttpServletRequest request) throws Exception {
 
         userService.updateUser(updateUserDTO, request);
-
+        LOGGER.info("Successfully updated the user");
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(path = "/v1/user", method = {RequestMethod.GET, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.HEAD, RequestMethod.OPTIONS, RequestMethod.TRACE})
     public ResponseEntity<Void> unSupportedMethodsForUser() {
+        LOGGER.error("Requested method is not unsupported");
         return new ResponseEntity<Void>(HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @RequestMapping(path = "/v1/user/self", method = {RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.HEAD, RequestMethod.OPTIONS, RequestMethod.TRACE})
     public ResponseEntity<Void> unSupportedMethodsForSelf() {
+        LOGGER.error("Requested method is not unsupported");
         return new ResponseEntity<Void>(HttpStatus.METHOD_NOT_ALLOWED);
     }
 }

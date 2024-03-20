@@ -23,8 +23,6 @@ public class HealthCheckController {
 
     @GetMapping("/healthz")
     public void checkDBConection(HttpServletRequest request, @RequestParam(required = false) String requestBody, @RequestHeader(value = HttpHeaders.CONTENT_LENGTH, required = false) Long contentLength, HttpServletResponse response) {
-        ThreadContext.put("severity", "INFO");
-        ThreadContext.put("httpMethod", "GET");
 
         LOGGER.info("checking the DB Connection");
         if ((requestBody != null && !requestBody.isEmpty()) || (contentLength != null && contentLength != 0L) || request.getParameterMap().size() > 0 || request.getHeader("Authorization") != null) {
@@ -33,24 +31,24 @@ public class HealthCheckController {
         }
         
         if (!healthCheckService.isDBConnected()) {
-            ThreadContext.put("severity", "ERROR");
-            LOGGER.error("service Unavailable");
+            LOGGER.error("DB service Unavailable");
             response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
         LOGGER.info("Service Active");
-        ThreadContext.clearAll();
         setHeaders(response);
     }
 
     @RequestMapping(path = "/healthz", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.HEAD, RequestMethod.OPTIONS, RequestMethod.TRACE})
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public void unSupportedMethods(HttpServletResponse response) {
+        LOGGER.error("Requested method is not unsupported");
         setHeaders(response);
     }
 
     @RequestMapping("/**")
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void unknownURL(HttpServletResponse response) {
+        LOGGER.error("Unknown URL Path Requested");
         setHeaders(response);
     }
 

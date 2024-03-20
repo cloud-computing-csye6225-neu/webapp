@@ -6,6 +6,8 @@
                 <KeyValuePair key="severity" value="$${ctx:severity}"/>
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss.SSS}"/>
                 <KeyValuePair key="httpMethod" value="$${ctx:httpMethod}"/>
+                <KeyValuePair key="path" value="$${ctx:path}"/>
+                <KeyValuePair key="remoteAddress" value="$${ctx:remoteAddress}"/>
             </JsonLayout>
         </File>
         <Console name="Console" target="SYSTEM_OUT">

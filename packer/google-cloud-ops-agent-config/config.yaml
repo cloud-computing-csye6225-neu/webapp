@@ -10,6 +10,11 @@ logging:
       type: parse_json
       time_key: time
       time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+    move_serverity:
+      type: modify_fields
+      fields:
+        severity:
+          move_from: jsonPayLoad.level
   service:
     pipelines:
       default_pipeline:
