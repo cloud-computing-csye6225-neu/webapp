@@ -3,7 +3,6 @@
     <Appenders>
         <File name="File" fileName="/var/log/webapp/application.log" append="true">
             <JsonLayout compact="true" eventEol="true" properties="true">
-                <KeyValuePair key="severity" value="$${ctx:severity}"/>
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss.SSS}"/>
                 <KeyValuePair key="httpMethod" value="$${ctx:httpMethod}"/>
                 <KeyValuePair key="path" value="$${ctx:path}"/>
