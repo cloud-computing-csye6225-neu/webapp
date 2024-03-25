@@ -3,7 +3,7 @@
     <Appenders>
         <File name="File" fileName="/var/log/webapp/application.log" append="true">
             <JsonLayout compact="true" eventEol="true" properties="true">
-                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss.SSS}"/>
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}"/>
                 <KeyValuePair key="httpMethod" value="$${ctx:httpMethod}"/>
                 <KeyValuePair key="path" value="$${ctx:path}"/>
                 <KeyValuePair key="remoteAddress" value="$${ctx:remoteAddress}"/>
