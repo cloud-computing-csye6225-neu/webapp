@@ -32,6 +32,9 @@ public class User {
 //	@Temporal(TemporalType.TIMESTAMP)
     private Timestamp modifiedOn;
 
+    @Column(name = "IS_ENABLED" , columnDefinition = "BOOLEAN DEFAULT true")
+    private Boolean isEnabled = false;
+
     public String getFirstName() {
         return firstName;
     }
@@ -88,5 +91,11 @@ public class User {
         this.modifiedOn = modifiedOn;
     }
 
+    public Boolean getEnabled() {
+        return isEnabled;
+    }
 
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
+    }
 }
