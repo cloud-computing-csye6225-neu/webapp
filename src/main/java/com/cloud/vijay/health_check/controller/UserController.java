@@ -3,7 +3,10 @@ package com.cloud.vijay.health_check.controller;
 import com.cloud.vijay.health_check.dto.UpdateUserDTO;
 import com.cloud.vijay.health_check.dto.UserDTO;
 import com.cloud.vijay.health_check.exception.BadRequestException;
+import com.cloud.vijay.health_check.model.VerificationToken;
+import com.cloud.vijay.health_check.service.PubSubService;
 import com.cloud.vijay.health_check.service.UserService;
+import com.cloud.vijay.health_check.service.VerificationTokenService;
 import com.cloud.vijay.health_check.util.CommonUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -19,12 +22,15 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired VerificationTokenService verificationTokenService;
     private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
     @PostMapping(path = "/v1/user")
     public ResponseEntity<UserDTO> addUser(@RequestBody @Valid UserDTO userDTO, HttpServletRequest request) throws Exception {
         userDTO = userService.addUser(userDTO, request);
         LOGGER.info("Successfully Created User");
+        verificationTokenService.sendVerification(userDTO);
+        LOGGER.info("sent email successfully to the user");
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
@@ -59,5 +65,15 @@ public class UserController {
     public ResponseEntity<Void> unSupportedMethodsForSelf() {
         LOGGER.error("Requested method is not unsupported");
         return new ResponseEntity<Void>(HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @RequestMapping(path = "/validateAccount", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseEntity<Void> validateAccount(@RequestParam  String token){
+        Boolean isVerified = verificationTokenService.isVerified(token);
+        if(isVerified)
+            return  new ResponseEntity<>(HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+
     }
 }
