@@ -29,7 +29,7 @@ public class PubSubService {
         publisher = Publisher.newBuilder(topicName).build();
         String message = "{\n" +
                 "    \"name\":\""+sendTo+"\",\n" +
-                "    \"email\":\""+sendTo+"\"\n" +
+                "    \"email\":\""+sendTo+"\",\n" +
                 "    \"activationLink\":\""+activationLink+"\"\n" +
                 "}";
 
