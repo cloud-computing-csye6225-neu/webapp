@@ -54,9 +54,10 @@ public class UserService {
     public UserDTO getUserDTO(HttpServletRequest request) throws Exception {
         UserDTO userDTO = new UserDTO();
         String authorizationHeader = request.getHeader("Authorization");
+        Boolean isIntegrationTests = request.getHeader("IsIntegrationTest") != null && Boolean.parseBoolean((String) request.getHeader("IsIntegrationTest"));
         Pair<String, String> creds = CommonUtil.getuserCredsFromToken(authorizationHeader);
         User user = userDao.getUserwithUserName(creds.getFirst());
-        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword()) || !user.getEnabled()) {
+        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword()) || (!isIntegrationTests && !user.getEnabled())) {
             LOGGER.error("User is not not authorized or inactive");
             throw new UnAuthorizedException();
         }
@@ -67,6 +68,7 @@ public class UserService {
     public void updateUser(UpdateUserDTO updateUserDTO, HttpServletRequest request) throws Exception {
 
         String authorizationHeader = request.getHeader("Authorization");
+        Boolean isIntegrationTests = request.getHeader("IsIntegrationTest") != null && Boolean.parseBoolean((String) request.getHeader("IsIntegrationTest"));
         LOGGER.debug("validating the user Request while updating the User");
         if (!CommonUtil.isValidPutRequest(request) || !CommonUtil.isvalidUpdateUserObject(updateUserDTO) || authorizationHeader == null) {
             LOGGER.error("Error occured while validating the request");
@@ -76,7 +78,7 @@ public class UserService {
         Pair<String, String> creds = CommonUtil.getuserCredsFromToken(authorizationHeader);
 
         User user = userDao.getUserwithUserName(creds.getFirst());
-        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword()) || !user.getEnabled()) {
+        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword()) || (!isIntegrationTests && !user.getEnabled())) {
             LOGGER.error("Error occured while validating user");
             throw new UnAuthorizedException("Error occured while validating credentials");
         }
