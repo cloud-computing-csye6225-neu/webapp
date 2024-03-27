@@ -42,7 +42,10 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{secrets.GCP_CREDENTIALS}}'
-          
+      - name: Prepare log directory
+        run: |
+          sudo mkdir -p /var/log/webapp/
+          sudo chmod -R 733 /var/log/webapp/
       - name: start DB
         run:
           sudo /etc/init.d/mysql start
