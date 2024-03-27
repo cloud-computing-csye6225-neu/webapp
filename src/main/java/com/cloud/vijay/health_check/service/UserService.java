@@ -29,8 +29,8 @@ public class UserService {
 
         LOGGER.debug("validating the user Request while creating the User");
         if (!CommonUtil.isValidPostRequest(request) || userDTO.getId() != null) {
-            LOGGER.error("Error occured while validating the request");
-            throw new BadRequestException("Error occured while validating the request");
+            LOGGER.error("Error occurred while validating the request");
+            throw new BadRequestException("Error occurred while validating the request");
         }
 
         User user = userDao.getUserwithUserName(userDTO.getUserName());
@@ -56,8 +56,8 @@ public class UserService {
         String authorizationHeader = request.getHeader("Authorization");
         Pair<String, String> creds = CommonUtil.getuserCredsFromToken(authorizationHeader);
         User user = userDao.getUserwithUserName(creds.getFirst());
-        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword())) {
-            LOGGER.error("User is not UnAuthorizedException");
+        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword()) || !user.getEnabled()) {
+            LOGGER.error("User is not not authorized or inactive");
             throw new UnAuthorizedException();
         }
         BeanUtils.copyProperties(user, userDTO);
@@ -76,8 +76,8 @@ public class UserService {
         Pair<String, String> creds = CommonUtil.getuserCredsFromToken(authorizationHeader);
 
         User user = userDao.getUserwithUserName(creds.getFirst());
-        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword())) {
-            LOGGER.error("Error occured while validating credentials");
+        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword()) || !user.getEnabled()) {
+            LOGGER.error("Error occured while validating user");
             throw new UnAuthorizedException("Error occured while validating credentials");
         }
 
