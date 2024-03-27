@@ -52,20 +52,28 @@ public class VerificationTokenService {
     }
 
     public Boolean isVerified(String token){
-        VerificationToken verificationToken = verificationDao.findByConfirmationToken(token);
-        if (verificationToken != null) {
-            Date expirationTime = verificationToken.getExpirationDate();
-            Date currentTime = new Date();
-            if (!currentTime.after(expirationTime)) {
-                User user = verificationToken.getUser();
-                user.setEnabled(true);
-                userDao.updateUser(user);
-                return true; // Token is valid
+        try {
+            VerificationToken verificationToken = verificationDao.findByConfirmationToken(token);
+            if (verificationToken != null) {
+                Date expirationTime = verificationToken.getExpirationDate();
+                Date currentTime = new Date();
+                if (!currentTime.after(expirationTime)) {
+                    User user = verificationToken.getUser();
+                    user.setEnabled(true);
+                    userDao.updateUser(user);
+                    LOGGER.debug("Successfully fetched token and enabled the user");
+                    return true; // Token is valid
+                } else {
+                    LOGGER.debug("The given token is expired");
+                    return false; // Token is older than 2 minutes
+                }
             } else {
-                return false; // Token is older than 2 minutes
+                LOGGER.warn("No token/user is present relative to token : "+token);
+                return false; // Token not found or null
             }
-        } else {
-            return false; // Token not found or null
+        }catch(Exception e){
+            LOGGER.error("Error occurred while validating the token. Cause : " + e.getMessage());
+            return false;
         }
     }
 }

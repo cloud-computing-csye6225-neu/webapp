@@ -71,6 +71,7 @@ public class UserController {
             throw new BadRequestException();
         }
         Boolean isVerified = verificationTokenService.isVerified(token);
+        LOGGER.info("The user status updated to:" + isVerified);
         if (isVerified) {
             return ResponseEntity.ok("Account is verified successfully");
         } else {
