@@ -6,8 +6,11 @@ import com.cloud.vijay.health_check.dto.UserDTO;
 import com.cloud.vijay.health_check.model.User;
 import com.cloud.vijay.health_check.model.VerificationToken;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 
@@ -24,16 +27,25 @@ public class VerificationTokenService {
     @Autowired
     private PubSubService pubSubService;
 
-    public void sendVerification(UserDTO userDTO){
+    @Value("${domain.name}")
+    private String domainName;
+
+    @Value("${server.port}")
+    private int portNumber;
+
+    private static final Logger LOGGER = LogManager.getLogger(VerificationTokenService.class);
+    public void sendVerificationMail(UserDTO userDTO){
         try {
             User user = userDao.getUserwithUserName(userDTO.getUserName());
             VerificationToken token = new VerificationToken(user);
             verificationDao.save(token);
             String to = user.getUserName();
-            String activationLink = "http://srivijaykalki.me:8080/validateAccount?token="+token.getConfirmationToken();
-
+            String activationLink = "http://" + domainName + ":" + portNumber + "/validateAccount?token=" + token.getConfirmationToken();
+            System.out.println(activationLink);
             pubSubService.publishMessage(to,token.getConfirmationToken(),activationLink);
+            LOGGER.info("sent email successfully to the user");
         } catch (Exception e) {
+            LOGGER.error("error occurred while verifying the user :"+e.getMessage());
             throw new RuntimeException(e);
         }
 
