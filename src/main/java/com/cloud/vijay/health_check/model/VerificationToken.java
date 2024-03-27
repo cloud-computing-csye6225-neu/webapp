@@ -7,17 +7,17 @@ import java.util.UUID;
 
 
 @Entity
-@Table(name="confirmationToken")
+@Table(name="confirmationTokenDetail")
 public class VerificationToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name="token_id")
-    private String tokenid;
+    private String tokenId;
 
     @Column(name="confirmation_token")
     private String confirmationToken;
-    private Date createdDate;
+    private Date expirationDate;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "id")
@@ -27,16 +27,16 @@ public class VerificationToken {
 
     public VerificationToken(User user) {
         this.user = user;
-        createdDate = new Date();
+        expirationDate = null;
         confirmationToken = UUID.randomUUID().toString();
     }
 
-    public String getTokenid() {
-        return tokenid;
+    public String getTokenId() {
+        return tokenId;
     }
 
-    public void setTokenid(String tokenid) {
-        this.tokenid = tokenid;
+    public void setTokenId(String tokenid) {
+        this.tokenId = tokenid;
     }
 
     public String getConfirmationToken() {
@@ -47,12 +47,12 @@ public class VerificationToken {
         this.confirmationToken = confirmationToken;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    public Date getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public void setExpirationDate(Date createdDate) {
+        this.expirationDate = createdDate;
     }
 
     public User getUser() {
