@@ -56,7 +56,7 @@ public class IntegrationTests {
         // Retrieve the user and validate existence
         given()
                 .auth().preemptive().basic(userName, password)
-                .header("isIntegrationTests", "true")
+                .header("IsIntegrationTest", "true")
                 .when()
                 .get("/v1/user/self")
                 .then()
@@ -74,7 +74,7 @@ public class IntegrationTests {
         given()
                 .contentType(ContentType.JSON)
                 .auth().preemptive().basic(userName, password)
-                .header("isIntegrationTests", "true")
+                .header("IsIntegrationTest", "true")
                 .body("{\n" +
                         "    \"first_name\": \"" + updatedFirstName + "\",\n" +
                         "    \"last_name\": \"" + updatedLastName + "\"\n" +
@@ -88,7 +88,7 @@ public class IntegrationTests {
         given()
                 .when()
                 .auth().preemptive().basic(userName, password)
-                .header("isIntegrationTests", "true")
+                .header("IsIntegrationTest", "true")
                 .get("/v1/user/self")
                 .then()
                 .statusCode(200)
