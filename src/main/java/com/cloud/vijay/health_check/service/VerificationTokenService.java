@@ -32,7 +32,7 @@ public class VerificationTokenService {
             String to = user.getUserName();
             String activationLink = "http://srivijaykalki.me:8080/validateAccount?token="+token.getConfirmationToken();
 
-            pubSubService.publishMessage(to,activationLink);
+            pubSubService.publishMessage(to,token.getConfirmationToken(),activationLink);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -42,11 +42,9 @@ public class VerificationTokenService {
     public Boolean isVerified(String token){
         VerificationToken verificationToken = verificationDao.findByConfirmationToken(token);
         if (verificationToken != null) {
-            Date tokenCreationTime = verificationToken.getCreatedDate();
+            Date expirationTime = verificationToken.getExpirationDate();
             Date currentTime = new Date();
-            long timeDifferenceMillis = currentTime.getTime() - tokenCreationTime.getTime();
-            long minutesElapsed = timeDifferenceMillis / (60 * 1000); // Convert milliseconds to minutes
-            if (minutesElapsed <= 2) {
+            if (!currentTime.after(expirationTime)) {
                 User user = verificationToken.getUser();
                 user.setEnabled(true);
                 userDao.updateUser(user);

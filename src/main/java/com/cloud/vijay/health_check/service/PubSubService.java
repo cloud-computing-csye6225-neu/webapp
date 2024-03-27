@@ -22,13 +22,13 @@ public class PubSubService {
       this.topicId = topicId;
     }
 
-    public void publishMessage(String sendTo, String activationLink){
+    public void publishMessage(String sendTo, String tokenId, String activationLink){
       Publisher publisher = null;
       try {
         TopicName topicName = TopicName.of(projectId, topicId);
         publisher = Publisher.newBuilder(topicName).build();
         String message = "{\n" +
-                "    \"name\":\""+sendTo+"\",\n" +
+                "    \"tokenId\":\""+tokenId+"\",\n" +
                 "    \"email\":\""+sendTo+"\",\n" +
                 "    \"activationLink\":\""+activationLink+"\"\n" +
                 "}";
