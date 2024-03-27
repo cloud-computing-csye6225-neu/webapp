@@ -71,16 +71,16 @@ public class UserService {
         Boolean isIntegrationTests = request.getHeader("IsIntegrationTest") != null && Boolean.parseBoolean((String) request.getHeader("IsIntegrationTest"));
         LOGGER.debug("validating the user Request while updating the User");
         if (!CommonUtil.isValidPutRequest(request) || !CommonUtil.isvalidUpdateUserObject(updateUserDTO) || authorizationHeader == null) {
-            LOGGER.error("Error occured while validating the request");
-            throw new BadRequestException("error occured while validating the request");
+            LOGGER.error("Error occurred while validating the request");
+            throw new BadRequestException("error occurred while validating the request");
         }
 
         Pair<String, String> creds = CommonUtil.getuserCredsFromToken(authorizationHeader);
 
         User user = userDao.getUserwithUserName(creds.getFirst());
         if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword()) || (!isIntegrationTests && !user.getEnabled())) {
-            LOGGER.error("Error occured while validating user");
-            throw new UnAuthorizedException("Error occured while validating credentials");
+            LOGGER.error("Error occurred while validating user or the user is inactive");
+            throw new UnAuthorizedException("Error occurred while validating credentials");
         }
 
         if (updateUserDTO.getPassword() != null)
