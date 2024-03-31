@@ -27,6 +27,8 @@ This class includes functionalities for checking the database connection and han
 - `/healthz` (POST, PUT, PATCH, DELETE, HEAD, OPTIONS, TRACE): Handles method-not-allowed for specific HTTP methods.
 - `/**`: Manages unknown URLs with a standard response.
 
+- 
+
 ## User Controller
 
 The `UserController` manages user-related operations, such as adding users, retrieving user details, and updating user information. It also handles unsupported HTTP methods for both general user operations and self-related operations.
