@@ -5,6 +5,7 @@ import com.cloud.vijay.health_check.dto.UpdateUserDTO;
 import com.cloud.vijay.health_check.dto.UserDTO;
 import com.cloud.vijay.health_check.exception.BadRequestException;
 import com.cloud.vijay.health_check.exception.ConflictException;
+import com.cloud.vijay.health_check.exception.ForbiddenException;
 import com.cloud.vijay.health_check.exception.UnAuthorizedException;
 import com.cloud.vijay.health_check.model.User;
 import com.cloud.vijay.health_check.util.CommonUtil;
@@ -57,10 +58,11 @@ public class UserService {
         Boolean isIntegrationTests = request.getHeader("IsIntegrationTest") != null && Boolean.parseBoolean((String) request.getHeader("IsIntegrationTest"));
         Pair<String, String> creds = CommonUtil.getuserCredsFromToken(authorizationHeader);
         User user = userDao.getUserwithUserName(creds.getFirst());
-        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword()) || (!isIntegrationTests && !user.getEnabled())) {
-            LOGGER.error("User is not not authorized or inactive");
+        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword())) {
+            LOGGER.error("User is not not authorized");
             throw new UnAuthorizedException();
         }
+
         BeanUtils.copyProperties(user, userDTO);
         return userDTO;
     }
@@ -78,9 +80,14 @@ public class UserService {
         Pair<String, String> creds = CommonUtil.getuserCredsFromToken(authorizationHeader);
 
         User user = userDao.getUserwithUserName(creds.getFirst());
-        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword()) || (!isIntegrationTests && !user.getEnabled())) {
+        if (user == null || !CommonUtil.validatePassword(creds.getSecond(), user.getPassword())) {
             LOGGER.error("Error occurred while validating user or the user is inactive");
             throw new UnAuthorizedException("Error occurred while validating credentials");
+        }
+
+        if(!isIntegrationTests && !user.getEnabled()){
+            LOGGER.error("User is inactive");
+            throw new ForbiddenException();
         }
 
         if (updateUserDTO.getPassword() != null)

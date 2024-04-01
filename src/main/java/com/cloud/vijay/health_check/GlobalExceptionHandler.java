@@ -2,6 +2,7 @@ package com.cloud.vijay.health_check;
 
 import com.cloud.vijay.health_check.exception.BadRequestException;
 import com.cloud.vijay.health_check.exception.ConflictException;
+import com.cloud.vijay.health_check.exception.ForbiddenException;
 import com.cloud.vijay.health_check.exception.UnAuthorizedException;
 import org.hibernate.TransactionException;
 import org.springframework.http.HttpStatus;
@@ -60,5 +61,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Void> handleRequestParamException(Exception ex) {
         System.err.println(ex.getMessage());
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<Void> handleForbiddenException(Exception ex) {
+        System.err.println(ex.getMessage());
+        return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
     }
 }
