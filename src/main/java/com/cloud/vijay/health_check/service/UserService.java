@@ -63,6 +63,11 @@ public class UserService {
             throw new UnAuthorizedException();
         }
 
+        if(!isIntegrationTests && !user.getEnabled()){
+            LOGGER.error("User is inactive");
+            throw new ForbiddenException();
+        }
+        
         BeanUtils.copyProperties(user, userDTO);
         return userDTO;
     }
