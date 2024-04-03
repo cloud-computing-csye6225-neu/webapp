@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.ThreadContext;
 
 import java.io.IOException;
+import java.net.InetAddress;
 public class LoggingFilter implements Filter {
 
     @Override
@@ -17,6 +18,7 @@ public class LoggingFilter implements Filter {
         ThreadContext.put("httpMethod", request.getMethod());
         ThreadContext.put("path", request.getRequestURI());
         ThreadContext.put("remoteAddress", request.getRemoteAddr());
+        ThreadContext.put("serverIP", InetAddress.getLocalHost().getHostAddress());
         // Proceed with the filter chain
         chain.doFilter(request, response);
         ThreadContext.clearAll();

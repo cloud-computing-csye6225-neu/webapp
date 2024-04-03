@@ -7,6 +7,7 @@
                 <KeyValuePair key="httpMethod" value="$${ctx:httpMethod}"/>
                 <KeyValuePair key="path" value="$${ctx:path}"/>
                 <KeyValuePair key="remoteAddress" value="$${ctx:remoteAddress}"/>
+                <KeyValuePair key="serverIP" value="$${ctx:serverIP}"/>
             </JsonLayout>
         </File>
         <Console name="Console" target="SYSTEM_OUT">
