@@ -40,7 +40,7 @@ public class VerificationTokenService {
             VerificationToken token = new VerificationToken(user);
             verificationDao.save(token);
             String to = user.getUserName();
-            String activationLink = "http://" + domainName + ":" + portNumber + "/validateAccount?token=" + token.getConfirmationToken();
+            String activationLink = "https://" + domainName  + "/validateAccount?token=" + token.getConfirmationToken();
             System.out.println(activationLink);
             pubSubService.publishMessage(to,token.getConfirmationToken(),activationLink);
             LOGGER.info("sent email successfully to the user");

@@ -20,6 +20,7 @@ public class HealthCheckService {
             LOGGER.debug("Checking the DB Connection @HealthCheckService.isDBConnected()");
             Connection connection = healthCheckDAO.getConenction();
         } catch (Exception e) {
+            LOGGER.error("ERROR: Unable to connect to HealthCheckService: " + e.getStackTrace());
             e.printStackTrace();
             return false;
         }
