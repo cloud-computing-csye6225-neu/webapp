@@ -27,6 +27,10 @@ jobs:
       PKR_VAR_ssh_username: ${{secrets.SSH_USERNAME}}
       PKR_VAR_network: ${{secrets.IMAGE_NETWORK}}
       PKR_VAR_image_name: ${{secrets.IMAGE_NAME}}
+      TEMPLATE_NAME: ${{secrets.TEMPLATE_NAME}}
+      ZONE_OR_REGION: ${{secrets.REGION}}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      INSTANCE_GROUP_NAME: ${{secrets.INSTANCE_GROUP_NAME}} 
 
     steps:
       - name: Checkout source code
@@ -39,6 +43,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
       
+      - name: Install uuid-runtime
+        run: sudo apt-get update && sudo apt-get install -y uuid-runtime
+
       - name: setup google config
         uses: 'google-github-actions/auth@v2'
         with:
@@ -69,3 +76,102 @@ jobs:
 
       - name: build Image
         run : packer build -var "DB_URL=${DB_URL}" -var "DB_USERNAME=${DB_USERNAME}" -var "DB_PASSWORD=${DB_PASSWORD}" packer
+
+      - name: GET Packer Image ID
+        id: GET_Packer_Image_Id
+        run: |
+          PACKER_BUILD_IMAGE_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
+          echo $PACKER_BUILD_IMAGE_ID
+          echo "PACKER_BUILD_IMAGE_ID=$PACKER_BUILD_IMAGE_ID" >> "$GITHUB_OUTPUT"
+          echo NEW_IMAGE=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2) >> $GITHUB_ENV
+      
+      - name: Check Packer Image ID
+        run: echo $PACKER_BUILD_IMAGE_ID
+      - name: Generate UUID and append to VM_INSTANCE_TEMPLATE_NAME
+        run: |
+          WORKFLOW_UUID=$(uuidgen | tr -d '-')
+          echo "TEMPLATE_NAME=${{ env.TEMPLATE_NAME }}-$WORKFLOW_UUID" >> $GITHUB_ENV
+          echo $GITHUB_ENV
+          echo "template mane -" $TEMPLATE_NAME
+      - name: Create instance template
+        env:
+            # PROJECT_ID: ${{secrets.PROJECT_ID}}
+            NEW_TEMPLATE_DESCRIPTION : ${{secrets.NEW_TEMPLATE_DESCRIPTION}} 
+            VM_TYPE: ${{secrets.VM_TYPE}}
+            REGION: ${{secrets.REGION}}
+            METADATA_STARTUP_SCRIPT: ${{ secrets.METADATA_STARTUP_SCRIPT }}
+            TEMPLATE_MAINTENANCE_POLICY: ${{secrets.TEMPLATE_MAINTENANCE_POLICY}}
+            TEMPLATE_PROVISIONING_MODEL: ${{secrets.TEMPLATE_PROVISIONING_MODEL}}
+            VM_SERVICE_ACCOUNT: ${{secrets.VM_SERVICE_ACCOUNT}}
+            VM_SERVICE_ACCOUNT_SCOPES: ${{secrets.VM_SERVICE_ACCOUNT_SCOPES}}
+            VM_TAG: ${{secrets.VM_TAG }}
+            SOURCE_IMAGE: ${{env.PACKER_BUILD_IMAGE_ID}}
+            VM_DISK_SIZE_GB: ${{secrets.VM_DISK_SIZE_GB}}
+            VM_DISK_TYPE: ${{secrets.VM_DISK_TYPE}}
+            VM_DISK_AUTO_DELETE: ${{ secrets.VM_DISK_AUTO_DELETE}}
+            VM_DISK_BOOT: ${{secrets.VM_DISK_BOOT}}
+            VM_KMS_KEY_LINK: ${{secrets.VM_KMS_KEY_LINK}}
+            VM_DEVICE_NAME:  ${{secrets.VM_DEVICE_NAME}}
+            # TEMPLATE_NAME: ${{secrets.TEMPLATE_NAME}} 
+            NETWORK_TIER: ${{secrets.NETWORK_TIER}}
+            SUBNET: ${{secrets.SUBNET}}
+
+        run: |
+          gcloud compute instance-templates create $TEMPLATE_NAME  \
+            --project=$PROJECT_ID \
+            --description="$NEW_TEMPLATE_DESCRIPTION" \
+            --instance-template-region="$REGION" \
+            --machine-type="$VM_TYPE" \
+            --network-interface="network-tier=$NETWORK_TIER,subnet=$SUBNET" \
+            --metadata="startup-script=$METADATA_STARTUP_SCRIPT" \
+            --maintenance-policy="$TEMPLATE_MAINTENANCE_POLICY" \
+            --provisioning-model="$TEMPLATE_PROVISIONING_MODEL" \
+            --service-account="$VM_SERVICE_ACCOUNT" \
+            --scopes="$VM_SERVICE_ACCOUNT_SCOPES" \
+            --region="$REGION" \
+            --tags="$VM_TAG" \
+            --create-disk="auto-delete=$VM_DISK_AUTO_DELETE,boot=$VM_DISK_BOOT,device-name=$DEVICE_NAME,image=${{ env.NEW_IMAGE }},kms-key=$VM_KMS_KEY_LINK,mode=rw,size=$VM_DISK_SIZE_GB,type=$VM_DISK_TYPE" \
+            --no-shielded-secure-boot \
+            --shielded-vtpm \
+            --shielded-integrity-monitoring \
+            --reservation-affinity=none
+
+      - name: Update Group Manager+
+
+        # env:
+          # INSTANCE_GROUP_NAME: ${{secrets.INSTANCE_GROUP_NAME}} 
+          # TEMPLATE_NAME: ${{secrets.TEMPLATE_NAME}}  
+          # ZONE_OR_REGION: ${{secrets.REGION}}
+          # PROJECT_ID: ${{ secrets.PROJECT_ID }}
+        run: |
+          gcloud compute instance-groups managed set-instance-template \
+            ${{ env.INSTANCE_GROUP_NAME }} \
+            --template=projects/${{ env.PROJECT_ID }}/regions/${{ env.ZONE_OR_REGION }}/instanceTemplates/$TEMPLATE_NAME \
+            --region=${{ env.ZONE_OR_REGION }} \
+            --project=${{ env.PROJECT_ID }}
+
+      - name: Starting Rolling Update
+        # env:
+          # INSTANCE_GROUP_NAME: ${{secrets.INSTANCE_GROUP_NAME}} 
+          # TEMPLATE_NAME: ${{secrets.TEMPLATE_NAME}}  
+          # ZONE_OR_REGION: ${{secrets.REGION}}
+          # PROJECT_ID: ${{ secrets.PROJECT_ID }}
+        run : |
+           gcloud compute instance-groups managed rolling-action start-update ${{ env.INSTANCE_GROUP_NAME }} \
+            --version=template=projects/${{ env.PROJECT_ID }}/regions/${{ env.ZONE_OR_REGION }}/instanceTemplates/$TEMPLATE_NAME \
+            --max-surge=5 \
+            --region=${{ env.ZONE_OR_REGION }} \
+            --project=${{ env.PROJECT_ID }}
+   
+      - name: Monitor instance group update
+        # env:
+          # INSTANCE_GROUP_NAME: ${{secrets.INSTANCE_GROUP_NAME}} 
+          # TEMPLATE_NAME: ${{secrets.TEMPLATE_NAME}}  
+          # ZONE_OR_REGION: ${{secrets.REGION}}
+          # PROJECT_ID: ${{ secrets.PROJECT_ID }}
+        run: |
+          status="RUNNING"
+          while [ "$status" != "True" ]; do
+          status=$(gcloud compute instance-groups managed describe $INSTANCE_GROUP_NAME --region=$ZONE_OR_REGION --project=$PROJECT_ID --format="value(status.versionTarget.isReached)")
+          sleep 10
+          done

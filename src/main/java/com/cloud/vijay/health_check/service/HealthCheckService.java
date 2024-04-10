@@ -18,13 +18,15 @@ public class HealthCheckService {
     public Boolean isDBConnected() {
         try {
             LOGGER.debug("Checking the DB Connection @HealthCheckService.isDBConnected()");
-            Connection connection = healthCheckDAO.getConenction();
+            try(Connection connection = healthCheckDAO.getConenction()){
+                // automaticLly DEKETES REH CONNECTION
+            }
+            return true;
         } catch (Exception e) {
             LOGGER.error("ERROR: Unable to connect to HealthCheckService: " + e.getStackTrace());
             e.printStackTrace();
             return false;
         }
-        return true;
     }
 
 }
