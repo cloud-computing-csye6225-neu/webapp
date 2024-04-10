@@ -81,4 +81,7 @@ build {
     script = "packer/scripts/env-setup.sh"
   }
 
+  post-processor "manifest" {
+    output = "manifest.json"
+  }
 }
