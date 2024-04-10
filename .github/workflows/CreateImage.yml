@@ -117,7 +117,7 @@ jobs:
             SUBNET: ${{secrets.SUBNET}}
 
         run: |
-          gcloud compute instance-templates create $TEMPLATE_NAME  \
+          gcloud alpha compute instance-templates create $TEMPLATE_NAME  \
             --project=$PROJECT_ID \
             --description="$NEW_TEMPLATE_DESCRIPTION" \
             --instance-template-region="$REGION" \
