@@ -49,7 +49,7 @@ public class IntegrationTests {
                         "    \"username\": \"" + userName + "\"\n" +
                         "}")
                 .when()
-                .post("/v1/user")
+                .post("/v8/user")
                 .then()
                 .statusCode(201);
 
@@ -58,7 +58,7 @@ public class IntegrationTests {
                 .auth().preemptive().basic(userName, password)
                 .header("IsIntegrationTest", "true")
                 .when()
-                .get("/v1/user/self")
+                .get("/v8/user/self")
                 .then()
                 .statusCode(200)
                 .body("id", matchesRegex(UUID_REGEX))
@@ -80,7 +80,7 @@ public class IntegrationTests {
                         "    \"last_name\": \"" + updatedLastName + "\"\n" +
                         "}")
                 .when()
-                .put("/v1/user/self")
+                .put("/v8/user/self")
                 .then()
                 .statusCode(204);
 
@@ -89,7 +89,7 @@ public class IntegrationTests {
                 .when()
                 .auth().preemptive().basic(userName, password)
                 .header("IsIntegrationTest", "true")
-                .get("/v1/user/self")
+                .get("/v8/user/self")
                 .then()
                 .statusCode(200)
                 .body("id", matchesRegex(UUID_REGEX))

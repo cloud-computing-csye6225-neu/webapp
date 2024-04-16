@@ -23,7 +23,7 @@ public class UserController {
     @Autowired VerificationTokenService verificationTokenService;
     private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
-    @PostMapping(path = "/v1/user")
+    @PostMapping(path = "/v8/user")
     public ResponseEntity<UserDTO> addUser(@RequestBody @Valid UserDTO userDTO, HttpServletRequest request) throws Exception {
         userDTO = userService.addUser(userDTO, request);
         LOGGER.info("Successfully Created User :"+userDTO.getUserName());
@@ -31,11 +31,11 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("/v1/user/self")
+    @GetMapping("/v8/user/self")
     public ResponseEntity<UserDTO> getSelfDetails(HttpServletRequest request) throws Exception {
 
         if (CommonUtil.hasRequestBody(request)) {
-            LOGGER.error("A bad Request request received for the path : /V1/user/self");
+            LOGGER.error("A bad Request request received for the path : /v8/user/self");
             throw new BadRequestException();
         }
 
@@ -44,7 +44,7 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/v1/user/self")
+    @PutMapping(path = "/v8/user/self")
     public ResponseEntity<Void> updateSelfDetails(@RequestBody @Valid UpdateUserDTO updateUserDTO, HttpServletRequest request) throws Exception {
 
         userService.updateUser(updateUserDTO, request);
@@ -52,15 +52,15 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(path = "/v1/user", method = {RequestMethod.GET, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.HEAD, RequestMethod.OPTIONS, RequestMethod.TRACE})
+    @RequestMapping(path = "/v8/user", method = {RequestMethod.GET, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.HEAD, RequestMethod.OPTIONS, RequestMethod.TRACE})
     public ResponseEntity<Void> unSupportedMethodsForUser() {
-        LOGGER.error("Requested method is not unsupported : /v1/user");
+        LOGGER.error("Requested method is not unsupported : /v8/user");
         return new ResponseEntity<Void>(HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    @RequestMapping(path = "/v1/user/self", method = {RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.HEAD, RequestMethod.OPTIONS, RequestMethod.TRACE})
+    @RequestMapping(path = "/v8/user/self", method = {RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.HEAD, RequestMethod.OPTIONS, RequestMethod.TRACE})
     public ResponseEntity<Void> unSupportedMethodsForSelf() {
-        LOGGER.error("Requested method is not unsupported for the path : /v1/user/self");
+        LOGGER.error("Requested method is not unsupported for the path : /v8/user/self");
         return new ResponseEntity<Void>(HttpStatus.METHOD_NOT_ALLOWED);
     }
 
